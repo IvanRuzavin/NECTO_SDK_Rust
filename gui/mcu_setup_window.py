@@ -2,7 +2,7 @@ import os
 import json
 from PyQt6.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QComboBox,
-    QLineEdit, QPushButton, QFileDialog, QScrollArea, QFormLayout, QMessageBox
+    QLineEdit, QPushButton, QFileDialog, QScrollArea, QFormLayout, QMessageBox, QCompleter
 )
 from PyQt6.QtCore import Qt
 
@@ -24,8 +24,18 @@ class MCUConfigurator(QWidget):
         # MCU selection layout
         mcu_layout = QHBoxLayout()
         mcu_label = QLabel("MCU:")
+        # Get MCU list
+        mcu_list = [f[:-5] for f in os.listdir(self.def_path) if f.endswith(".json")]
+
         self.mcu_combo = QComboBox()
-        self.mcu_combo.addItems([f[:-5] for f in os.listdir(self.def_path) if f.endswith(".json")])
+        self.mcu_combo.setEditable(True)
+        self.mcu_combo.addItems(mcu_list)
+
+        # Enable filtering while typing
+        completer = QCompleter(mcu_list, self.mcu_combo)
+        completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
+        self.mcu_combo.setCompleter(completer)
+
         self.mcu_combo.currentTextChanged.connect(self.load_mcu_config)
 
         mcu_layout.addWidget(mcu_label)
