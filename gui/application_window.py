@@ -9,6 +9,8 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFont, QGuiApplication
 
+from mcu_setup_window import MCUConfigurator
+
 # URLs
 VS_TOOLS_URL = "https://aka.ms/vs/17/release/vs_BuildTools.exe"
 RUST_URL = "https://static.rust-lang.org/rustup/dist/x86_64-pc-windows-msvc/rustup-init.exe"
@@ -45,6 +47,7 @@ def run_powershell_command(command):
 
 def copy_to_clipboard(text):
     QGuiApplication.clipboard().setText(text)
+    
 
 # Main Window
 class RustInstallerApp(QWidget):
@@ -53,6 +56,11 @@ class RustInstallerApp(QWidget):
         self.setWindowTitle("Rust Toolchain Setup")
         self.resize(600, 300)
         self.init_ui()
+
+    def launch_mcu_window(self):
+        self.mcu_window = MCUConfigurator()
+        self.mcu_window.show()
+        self.close()
 
     def init_ui(self):
         layout = QVBoxLayout()
@@ -72,7 +80,7 @@ class RustInstallerApp(QWidget):
         self.start_button = QPushButton("I would like to start my work with my RUST SDK project")
         self.start_button.setMinimumHeight(80)
         self.start_button.setFont(QFont("Arial", 12))
-        self.start_button.clicked.connect(lambda: QMessageBox.information(self, "Info", "This option is not yet implemented."))
+        self.start_button.clicked.connect(self.launch_mcu_window)
 
         button_layout.addWidget(self.install_button)
         button_layout.addWidget(self.start_button)
