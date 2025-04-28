@@ -27,8 +27,8 @@ for root, _, files in os.walk('d:/work_mikroe/GIT/core_packages/ARM/gcc_clang/de
                     source_header_lines = source_header_file.readlines()
                 os.makedirs(os.path.join('gui/core_packages/def/stm', mcu_name), exist_ok=True)
 
+                temp_lines = []
                 for line in source_header_lines:
-                    # Start capturing once _BASE is seen
                     if '_BASE' in line:
                         start_writing = True
                     if 'Exported_macros' in line:
@@ -36,7 +36,6 @@ for root, _, files in os.walk('d:/work_mikroe/GIT/core_packages/ARM/gcc_clang/de
 
                     if start_writing:
                         if '#define' in line and 'TypeDef' not in line and 'uint' not in line and 'Kept for legacy' not in line:
-                            # Remove inline comments properly
                             line = line.strip()
                             if '/*' in line:
                                 main_part, comment_part = line.split('/*', 1)
@@ -49,19 +48,20 @@ for root, _, files in os.walk('d:/work_mikroe/GIT/core_packages/ARM/gcc_clang/de
                             if len(tokens) >= 2:
                                 key = tokens[0]
                                 value = tokens[1]
-                                # Clean value
                                 value = value.replace('(', '').replace(')', '').replace('UL', '').replace('U', '')
+                                temp_lines.append((key, value, comment))
 
-                                rust_line = f'pub const {key}: u32 = {value};'
-                                if comment:
-                                    rust_line += f' {comment}'
-                                rust_line += '\n'
-                                rust_lines.append(rust_line)
-                        else:
-                            # Ignore irrelevant lines
-                            pass
+                # Calculate max length for alignment
+                if temp_lines:
+                    max_key_length = max(len(key) for key, _, _ in temp_lines)
+                    for key, value, comment in temp_lines:
+                        spacing = ' ' * (max_key_length - len(key) + 1)
+                        rust_line = f'pub const {key}{spacing}:u32 = {value};'
+                        if comment:
+                            rust_line += f' {comment}'
+                        rust_line += '\n'
+                        rust_lines.append(rust_line)
 
-                # Save to lib.rs
                 with open(os.path.join('gui/core_packages/def/stm', mcu_name, 'lib.rs'), 'w', encoding='utf-8') as dest_header_file:
                     dest_header_file.writelines(rust_lines)
                     print(f'Created {os.path.join("gui/core_packages/def/stm", mcu_name, "lib.rs")}')
