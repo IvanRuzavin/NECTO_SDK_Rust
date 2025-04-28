@@ -145,11 +145,11 @@ class MCUConfigurator(QWidget):
 
         output.append(f"pub const FOSC_KHZ_VALUE : u32 = {clock_int * 1000};")
 
-        os.makedirs("core_header", exist_ok=True)
-        with open("core/core_header/lib.rs", "w") as f:
+        os.makedirs("core/core_header", exist_ok=True)
+        with open("core/core_header/src/lib.rs", "w") as f:
             f.write("\n".join(output))
 
-        QMessageBox.information(self, "Saved", "System parameters saved to core_header/lib.rs")
+        QMessageBox.information(self, "Saved", "System parameters saved to core/core_header/src/lib.rs")
 
 if __name__ == "__main__":
     import sys
