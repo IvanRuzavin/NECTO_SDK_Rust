@@ -135,7 +135,7 @@ pub const _adc_map: &[hal_ll_adc_pin_map_t] =
     hal_ll_adc_pin_map_t{pin: GPIO_F7,  base: ADC3_BASE_ADDR, module_index: hal_ll_adc_module_num(ADC_MODULE_3), channel: hal_ll_adc_channel_t::HAL_LL_ADC_CHANNEL_5},
     hal_ll_adc_pin_map_t{pin: GPIO_F8,  base: ADC3_BASE_ADDR, module_index: hal_ll_adc_module_num(ADC_MODULE_3), channel: hal_ll_adc_channel_t::HAL_LL_ADC_CHANNEL_6},
     hal_ll_adc_pin_map_t{pin: GPIO_F9,  base: ADC3_BASE_ADDR, module_index: hal_ll_adc_module_num(ADC_MODULE_3), channel: hal_ll_adc_channel_t::HAL_LL_ADC_CHANNEL_7},
-    hal_ll_adc_pin_map_t{pin: GPIO_F10,  base: ADC3_BASE_ADDR, module_index: hal_ll_adc_module_num(ADC_MODULE_3), channel: hal_ll_adc_channel_t::HAL_LL_ADC_CHANNEL_8},
+    hal_ll_adc_pin_map_t{pin: GPIO_F10, base: ADC3_BASE_ADDR, module_index: hal_ll_adc_module_num(ADC_MODULE_3), channel: hal_ll_adc_channel_t::HAL_LL_ADC_CHANNEL_8},
     hal_ll_adc_pin_map_t{pin: GPIO_F3,  base: ADC3_BASE_ADDR, module_index: hal_ll_adc_module_num(ADC_MODULE_3), channel: hal_ll_adc_channel_t::HAL_LL_ADC_CHANNEL_9},
     hal_ll_adc_pin_map_t{pin: GPIO_C0,  base: ADC3_BASE_ADDR, module_index: hal_ll_adc_module_num(ADC_MODULE_3), channel: hal_ll_adc_channel_t::HAL_LL_ADC_CHANNEL_10},
     hal_ll_adc_pin_map_t{pin: GPIO_C1,  base: ADC3_BASE_ADDR, module_index: hal_ll_adc_module_num(ADC_MODULE_3), channel: hal_ll_adc_channel_t::HAL_LL_ADC_CHANNEL_11},

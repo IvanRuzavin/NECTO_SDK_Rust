@@ -3,3 +3,4 @@
 installer/*
 # gui/core_packages/*
 core/core_header/*
+core/mcu_header/*
