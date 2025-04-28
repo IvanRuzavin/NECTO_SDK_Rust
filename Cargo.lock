@@ -82,6 +82,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "drv_i2c_master"
+version = "0.1.0"
+dependencies = [
+ "drv_name",
+ "hal_i2c_master",
+]
+
+[[package]]
 name = "drv_name"
 version = "0.1.0"
 dependencies = [
@@ -95,6 +103,14 @@ version = "0.1.0"
 dependencies = [
  "drv_name",
  "hal_gpio",
+]
+
+[[package]]
+name = "drv_spi_master"
+version = "0.1.0"
+dependencies = [
+ "drv_name",
+ "hal_spi_master",
 ]
 
 [[package]]
@@ -120,6 +136,14 @@ name = "hal_gpio"
 version = "0.1.0"
 dependencies = [
  "hal_ll_gpio",
+ "hal_target",
+]
+
+[[package]]
+name = "hal_i2c_master"
+version = "0.1.0"
+dependencies = [
+ "hal_ll_i2c_master",
  "hal_target",
 ]
 
@@ -160,11 +184,45 @@ dependencies = [
 ]
 
 [[package]]
+name = "hal_ll_i2c_master"
+version = "0.1.0"
+dependencies = [
+ "hal_ll_gpio",
+ "hal_ll_i2c_pin_map",
+ "hal_ll_target",
+ "system",
+]
+
+[[package]]
+name = "hal_ll_i2c_pin_map"
+version = "0.1.0"
+dependencies = [
+ "hal_ll_pin_names",
+]
+
+[[package]]
 name = "hal_ll_pin_names"
 version = "0.1.1"
 dependencies = [
  "hal_ll_target_names",
  "mcu",
+]
+
+[[package]]
+name = "hal_ll_spi_master"
+version = "0.1.0"
+dependencies = [
+ "hal_ll_gpio",
+ "hal_ll_spi_master_pin_map",
+ "hal_ll_target",
+ "system",
+]
+
+[[package]]
+name = "hal_ll_spi_master_pin_map"
+version = "0.1.0"
+dependencies = [
+ "hal_ll_pin_names",
 ]
 
 [[package]]
@@ -178,6 +236,16 @@ dependencies = [
 [[package]]
 name = "hal_ll_target_names"
 version = "0.1.1"
+
+[[package]]
+name = "hal_spi_master"
+version = "0.1.0"
+dependencies = [
+ "hal_gpio",
+ "hal_ll_spi_master",
+ "hal_target",
+ "system",
+]
 
 [[package]]
 name = "hal_target"
@@ -199,8 +267,12 @@ dependencies = [
  "drv_analog_in",
  "drv_digital_in",
  "drv_digital_out",
+ "drv_i2c_master",
  "drv_name",
  "drv_port",
+ "drv_spi_master",
+ "hal_ll_spi_master",
+ "hal_spi_master",
  "panic-halt",
  "system",
 ]
