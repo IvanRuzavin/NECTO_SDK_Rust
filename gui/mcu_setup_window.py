@@ -6,6 +6,29 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtCore import Qt
 
+cargo_contents = """\
+[package]
+name = "{{folder}}"
+version = "0.1.1"
+edition = "2024"
+author =  ["MIKROE sales@mikroe.com"]
+
+
+[profile.release]
+opt-level = 'z' 
+lto = true
+
+
+[profile.dev]
+opt-level = 0 
+lto = false  
+
+
+[dependencies]
+
+[features]
+"""
+
 class MCUConfigurator(QWidget):
     def __init__(self):
         super().__init__()
@@ -124,6 +147,7 @@ class MCUConfigurator(QWidget):
     def save_parameters(self):
         output = []
         clock = self.clock_input.text()
+        selected_mcu = self.mcu_combo.currentText()
         try:
             clock_int = int(clock)
         except ValueError:
@@ -145,11 +169,26 @@ class MCUConfigurator(QWidget):
 
         output.append(f"pub const FOSC_KHZ_VALUE : u32 = {clock_int * 1000};")
 
-        os.makedirs("core/core_header", exist_ok=True)
+        os.makedirs("core/core_header/src", exist_ok=True)
+        os.makedirs("core/mcu_header/src", exist_ok=True)
         with open("core/core_header/src/lib.rs", "w") as f:
             f.write("\n".join(output))
+        with open("core/core_header/Cargo.toml", "w") as f:
+            f.write(cargo_contents.replace('{{folder}}', 'core_header'))
+        
+        with open(f"gui/core_packages/def/stm/{selected_mcu}/lib.rs", "r") as f:
+            mcu_header_contents = f.read()
+        with open("core/mcu_header/src/lib.rs", "w") as f:
+            f.write(mcu_header_contents)
+        with open("core/mcu_header/Cargo.toml", "w") as f:
+            f.write(cargo_contents.replace('{{folder}}', 'mcu_header'))
+        
+        with open(f"gui/core_packages/memory/stm/{selected_mcu}/memory.x", "r") as f:
+            memory_x_contents = f.read()
+        with open("memory.x", "w") as f:
+            f.write(memory_x_contents)
 
-        QMessageBox.information(self, "Saved", "System parameters saved to core/core_header/src/lib.rs")
+        QMessageBox.information(self, "Saved", "System core_header generated, MCU header placed properly, appropriate memory.x file prepared")
 
 if __name__ == "__main__":
     import sys

@@ -40,7 +40,8 @@
 #![no_std]
 
 pub use hal_ll_target_names::*;
-pub use mcu::*;
+pub use mcu_header::*;
+pub use core_header::*;
 
 pub const HAL_LL_PIN_NC : hal_ll_pin_name_t = 0xFF;
 pub const HAL_LL_PORT_NC : hal_ll_pin_name_t = 0xFF;
