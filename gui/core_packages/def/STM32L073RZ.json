@@ -1,0 +1,510 @@
+{
+    "config_registers": [
+        {
+            "address": "40021008",
+            "default": "00000000",
+            "fields": [
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "HSI48ON",
+                    "label": "48MHz HSI clock enable bit",
+                    "mask": "00000001",
+                    "settings": [
+                        {
+                            "label": "48MHz HSI clock disabled",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "48MHz HSI clock enabled",
+                            "value": "00000001"
+                        }
+                    ]
+                }
+            ],
+            "key": "RCC_CRRCR",
+            "unused": "00000000"
+        },
+        {
+            "address": "40021000",
+            "default": "00000000",
+            "fields": [
+                {
+                    "hidden": false,
+                    "init": "00000001",
+                    "key": "HSI16ON",
+                    "label": "16 MHz high-speed internal clock enable",
+                    "mask": "000000001",
+                    "settings": [
+                        {
+                            "label": "HSI16 oscillator OFF",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "HSI16 oscillator ON",
+                            "value": "00000001"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "HSI16DIVEN",
+                    "label": "HSI16 divider enable bit",
+                    "mask": "000000008",
+                    "settings": [
+                        {
+                            "label": "no 16 MHz HSI division requested",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "16 MHz HSI division by 4 requested",
+                            "value": "00000008"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "MSION",
+                    "label": "MSI clock enable",
+                    "mask": "00000100",
+                    "settings": [
+                        {
+                            "label": "MSI oscillator OFF",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "MSI oscillator ON",
+                            "value": "00000100"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "HSEON",
+                    "label": "External high-speed clock enable",
+                    "mask": "00010000",
+                    "settings": [
+                        {
+                            "label": "HSE oscillator OFF",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "HSE oscillator ON",
+                            "value": "00010000"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "HSEBYP",
+                    "label": "External high-speed clock bypass",
+                    "mask": "00040000",
+                    "settings": [
+                        {
+                            "label": "HSE oscillator not bypassed",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "HSE oscillator bypassed with external clock",
+                            "value": "00040000"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "CSSHSEON",
+                    "label": "Clock security system on HSE enable bit",
+                    "mask": "00080000",
+                    "settings": [
+                        {
+                            "label": "Clock security system OFF",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "Clock security system ON",
+                            "value": "00080000"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "RTCPRE",
+                    "label": "RTC prescaler",
+                    "mask": "00300000",
+                    "settings": [
+                        {
+                            "label": "HSE is divided by 2 for RTC clock",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "HSE is divided by 4 for RTC clock",
+                            "value": "00100000"
+                        },
+                        {
+                            "label": "HSE is divided by 8 for RTC clock",
+                            "value": "00200000"
+                        },
+                        {
+                            "label": "HSE is divided by 16 for RTC clock",
+                            "value": "00300000"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "01000000",
+                    "key": "PLLON",
+                    "label": "PLL Power Down",
+                    "mask": "01000000",
+                    "settings": [
+                        {
+                            "label": "PLL OFF",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "PLL ON",
+                            "value": "01000000"
+                        }
+                    ]
+                }
+            ],
+            "key": "RCC_CR",
+            "unused": "00000000"
+        },
+        {
+            "address": "4002100C",
+            "default": "00000000",
+            "fields": [
+                {
+                    "hidden": false,
+                    "init": "00000003",
+                    "key": "SW",
+                    "label": "System clock switch",
+                    "mask": "00000003",
+                    "settings": [
+                        {
+                            "label": "MSI oscillator used as system clock",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "HSI16 oscillator used as system clock",
+                            "value": "00000001"
+                        },
+                        {
+                            "label": "HSE oscillator used as system clock",
+                            "value": "00000002"
+                        },
+                        {
+                            "label": "PLL used as system clock",
+                            "value": "00000003"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "HPRE",
+                    "label": "Set and cleared by software to control the division factor of the AHB clock",
+                    "mask": "0000000F0",
+                    "settings": [
+                        {
+                            "label": "SYSCLK not divided",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "SYSCLK divided by 2",
+                            "value": "00000080"
+                        },
+                        {
+                            "label": "SYSCLK divided by 4",
+                            "value": "00000090"
+                        },
+                        {
+                            "label": "SYSCLK divided by 8",
+                            "value": "000000A0"
+                        },
+                        {
+                            "label": "SYSCLK divided by 16",
+                            "value": "000000B0"
+                        },
+                        {
+                            "label": "SYSCLK divided by 64",
+                            "value": "000000C0"
+                        },
+                        {
+                            "label": "SYSCLK divided by 128",
+                            "value": "000000D0"
+                        },
+                        {
+                            "label": "SYSCLK divided by 256",
+                            "value": "000000E0"
+                        },
+                        {
+                            "label": "SYSCLK divided by 512",
+                            "value": "000000F0"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "PPRE1",
+                    "label": "APB low-speed prescaler (APB1)",
+                    "mask": "00000700",
+                    "settings": [
+                        {
+                            "label": " HCLK not divided ",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": " HCLK divided by 2 ",
+                            "value": "00000400"
+                        },
+                        {
+                            "label": " HCLK divided by 4 ",
+                            "value": "00000500"
+                        },
+                        {
+                            "label": " HCLK divided by 8 ",
+                            "value": "00000600"
+                        },
+                        {
+                            "label": " HCLK divided by 16 ",
+                            "value": "00000700"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "PPRE2",
+                    "label": "APB high-speed prescaler (APB2)",
+                    "mask": "00003800",
+                    "settings": [
+                        {
+                            "label": " HCLK not divided ",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": " HCLK divided by 2 ",
+                            "value": "00002000"
+                        },
+                        {
+                            "label": " HCLK divided by 4 ",
+                            "value": "00002800"
+                        },
+                        {
+                            "label": " HCLK divided by 8 ",
+                            "value": "00003000"
+                        },
+                        {
+                            "label": " HCLK divided by 16 ",
+                            "value": "00003800"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "PLLSRC",
+                    "label": "PLL entry clock source",
+                    "mask": "00010000",
+                    "settings": [
+                        {
+                            "label": "HSI16 oscillator clock selected as PLL input clock",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "HSE oscillator clock selected as PLL input clock",
+                            "value": "00010000"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00040000",
+                    "key": "PLLMUL",
+                    "label": "PLL multiplication factor",
+                    "mask": "003C0000",
+                    "settings": [
+                        {
+                            "label": "PLLVCO = PLL clock entry x 3",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "PLLVCO = PLL clock entry x 4",
+                            "value": "00040000"
+                        },
+                        {
+                            "label": "PLLVCO = PLL clock entry x 6",
+                            "value": "00080000"
+                        },
+                        {
+                            "label": "PLLVCO = PLL clock entry x 8",
+                            "value": "000C0000"
+                        },
+                        {
+                            "label": "PLLVCO = PLL clock entry x 12",
+                            "value": "00100000"
+                        },
+                        {
+                            "label": "PLLVCO = PLL clock entry x 16",
+                            "value": "00140000"
+                        },
+                        {
+                            "label": "PLLVCO = PLL clock entry x 24",
+                            "value": "00180000"
+                        },
+                        {
+                            "label": "PLLVCO = PLL clock entry x 32",
+                            "value": "001C0000"
+                        },
+                        {
+                            "label": "PLLVCO = PLL clock entry x 48",
+                            "value": "00200000"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00400000",
+                    "key": "PLLDIV",
+                    "label": "PLL output division",
+                    "mask": "00C00000",
+                    "settings": [
+                        {
+                            "label": "not allowed",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "PLL clock output = PLLVCO / 2",
+                            "value": "00400000"
+                        },
+                        {
+                            "label": "PLL clock output = PLLVCO / 3",
+                            "value": "00800000"
+                        },
+                        {
+                            "label": "PLL clock output = PLLVCO / 4",
+                            "value": "00C00000"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "MCOSEL",
+                    "label": "Microcontroller clock output",
+                    "mask": "0F000000",
+                    "settings": [
+                        {
+                            "label": "No clock",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "System clock (SYSCLK) selected",
+                            "value": "01000000"
+                        },
+                        {
+                            "label": "HSI16 clock selected",
+                            "value": "02000000"
+                        },
+                        {
+                            "label": "MSI oscillator clock selected",
+                            "value": "03000000"
+                        },
+                        {
+                            "label": "HSE oscillator clock selected",
+                            "value": "04000000"
+                        },
+                        {
+                            "label": "PLL clock selected",
+                            "value": "05000000"
+                        },
+                        {
+                            "label": "LSI oscillator clock selected",
+                            "value": "06000000"
+                        },
+                        {
+                            "label": "LSE oscillator clock selected",
+                            "value": "07000000"
+                        },
+                        {
+                            "label": "HSI48 oscillator clock selected",
+                            "value": "08000000"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "MCOPRE",
+                    "label": "Microcontroller clock output prescaler",
+                    "mask": "70000000",
+                    "settings": [
+                        {
+                            "label": "MCO is divided by 1",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "MCO is divided by 2",
+                            "value": "10000000"
+                        },
+                        {
+                            "label": "MCO is divided by 4",
+                            "value": "20000000"
+                        },
+                        {
+                            "label": "MCO is divided by 8",
+                            "value": "30000000"
+                        },
+                        {
+                            "label": "MCO is divided by 16",
+                            "value": "40000000"
+                        }
+                    ]
+                }
+            ],
+            "key": "RCC_CFGR",
+            "unused": "00000000"
+        },
+        {
+            "address": "40007000",
+            "default": "00000000",
+            "fields": [
+                {
+                    "hidden": false,
+                    "init": "00001000",
+                    "key": "VCORE",
+                    "label": "Core Voltage",
+                    "mask": "00001800",
+                    "settings": [
+                        {
+                            "label": "VCORE = 1.2 V",
+                            "value": "00001800"
+                        },
+                        {
+                            "label": "VCORE = 1.5 V",
+                            "value": "00001000"
+                        },
+                        {
+                            "label": "VCORE = 1.8 V",
+                            "value": "00000800"
+                        }
+                    ]
+                }
+            ],
+            "key": "PWR_CR",
+            "unused": "00000000"
+        }
+    ],
+    "core": "M0",
+    "delay_src_path": "delays/m0/__lib_delays.c",
+    "clock": "32"
+}

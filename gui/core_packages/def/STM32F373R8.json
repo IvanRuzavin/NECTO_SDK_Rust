@@ -1,0 +1,563 @@
+{
+    "config_registers": [
+        {
+            "address": "40021000",
+            "default": "00000000",
+            "fields": [
+                {
+                    "hidden": false,
+                    "init": "00000001",
+                    "key": "HSION",
+                    "label": "Internal high-speed clock enable",
+                    "mask": "00000001",
+                    "settings": [
+                        {
+                            "label": "HSI oscillator OFF",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "HSI oscillator ON",
+                            "value": "00000001"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "HSEON",
+                    "label": "External high-speed clock enable",
+                    "mask": "00010000",
+                    "settings": [
+                        {
+                            "label": "HSE oscillator OFF",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "HSE oscillator ON",
+                            "value": "00010000"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "HSEBYP",
+                    "label": "External high-speed clock bypass",
+                    "mask": "00040000",
+                    "settings": [
+                        {
+                            "label": "HSE oscillator not bypassed",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "HSE oscillator bypassed with external clock",
+                            "value": "00040000"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "CSSON",
+                    "label": "Clock security system enable",
+                    "mask": "00080000",
+                    "settings": [
+                        {
+                            "label": "Clock detector OFF",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "Clock detector ON (if the HSE oscillator is ready, OFF if not)",
+                            "value": "00080000"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "PLLON",
+                    "label": "Main PLL (PLL) enable",
+                    "mask": "01000000",
+                    "settings": [
+                        {
+                            "label": "PLL OFF",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "PLL ON",
+                            "value": "01000000"
+                        }
+                    ]
+                }
+            ],
+            "key": "RCC_CR",
+            "unused": "00000000"
+        },
+        {
+            "address": "40021004",
+            "default": "00000000",
+            "fields": [
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "SW",
+                    "label": "System clock switch",
+                    "mask": "00000003",
+                    "settings": [
+                        {
+                            "label": "HSI selected as system clock",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "HSE selected as system clock",
+                            "value": "00000001"
+                        },
+                        {
+                            "label": "PLL selected as system clock",
+                            "value": "00000002"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "HPRE",
+                    "label": "Set and cleared by software to control the division factor of the AHB clock",
+                    "mask": "000000F0",
+                    "settings": [
+                        {
+                            "label": "SYSCLK not divided",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "SYSCLK divided by 2",
+                            "value": "00000080"
+                        },
+                        {
+                            "label": "SYSCLK divided by 4",
+                            "value": "00000090"
+                        },
+                        {
+                            "label": "SYSCLK divided by 8",
+                            "value": "000000A0"
+                        },
+                        {
+                            "label": "SYSCLK divided by 16",
+                            "value": "000000B0"
+                        },
+                        {
+                            "label": "SYSCLK divided by 64",
+                            "value": "000000C0"
+                        },
+                        {
+                            "label": "SYSCLK divided by 128",
+                            "value": "000000D0"
+                        },
+                        {
+                            "label": "SYSCLK divided by 256",
+                            "value": "000000E0"
+                        },
+                        {
+                            "label": "SYSCLK divided by 512",
+                            "value": "000000F0"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "PPRE1",
+                    "label": "APB low-speed prescaler (APB1)",
+                    "mask": "00000700",
+                    "settings": [
+                        {
+                            "label": "HCLK not divided ",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "HCLK divided by 2 ",
+                            "value": "00000400"
+                        },
+                        {
+                            "label": "HCLK divided by 4 ",
+                            "value": "00000500"
+                        },
+                        {
+                            "label": "HCLK divided by 8 ",
+                            "value": "00000600"
+                        },
+                        {
+                            "label": "HCLK divided by 16 ",
+                            "value": "00000700"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "PPRE2",
+                    "label": "APB high-speed prescaler (APB2)",
+                    "mask": "00003800",
+                    "settings": [
+                        {
+                            "label": "HCLK not divided ",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "HCLK divided by 2 ",
+                            "value": "00002000"
+                        },
+                        {
+                            "label": "HCLK divided by 4 ",
+                            "value": "00002800"
+                        },
+                        {
+                            "label": "HCLK divided by 8 ",
+                            "value": "00003000"
+                        },
+                        {
+                            "label": "HCLK divided by 16 ",
+                            "value": "00003800"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "ADCPRE",
+                    "label": "ADC prescaler",
+                    "mask": "0000C000",
+                    "settings": [
+                        {
+                            "label": "PCLK divided by 2.",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "PCLK divided by 4.",
+                            "value": "00004000"
+                        },
+                        {
+                            "label": "PCLK divided by 6.",
+                            "value": "00008000"
+                        },
+                        {
+                            "label": "PCLK divided by 8.",
+                            "value": "0000C000"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "PLLSRC",
+                    "label": "PLL entry clock source",
+                    "mask": "00010000",
+                    "settings": [
+                        {
+                            "label": "HSI/2 selected as PLL input clock.",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "HSE/PREDIV selected as PLL input clock.",
+                            "value": "00010000"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "PLLXTPRE",
+                    "label": "HSE divider for PLL input clock",
+                    "mask": "00020000",
+                    "settings": [
+                        {
+                            "label": "HSE input to PLL not divided.",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "HSE input to PLL divided by 2.",
+                            "value": "00020000"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "PLLMUL",
+                    "label": "PLL multiplication factor (must not exceed 72 MHz)",
+                    "mask": "003C0000",
+                    "settings": [
+                        {
+                            "label": "PLL input clock x 2.",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "PLL input clock x 3.",
+                            "value": "00040000"
+                        },
+                        {
+                            "label": "PLL input clock x 4.",
+                            "value": "00080000"
+                        },
+                        {
+                            "label": "PLL input clock x 5.",
+                            "value": "000C0000"
+                        },
+                        {
+                            "label": "PLL input clock x 6.",
+                            "value": "00100000"
+                        },
+                        {
+                            "label": "PLL input clock x 7.",
+                            "value": "00140000"
+                        },
+                        {
+                            "label": "PLL input clock x 8.",
+                            "value": "00180000"
+                        },
+                        {
+                            "label": "PLL input clock x 9.",
+                            "value": "001C0000"
+                        },
+                        {
+                            "label": "PLL input clock x 10.",
+                            "value": "00200000"
+                        },
+                        {
+                            "label": "PLL input clock x 11.",
+                            "value": "00240000"
+                        },
+                        {
+                            "label": "PLL input clock x 12.",
+                            "value": "00280000"
+                        },
+                        {
+                            "label": "PLL input clock x 13.",
+                            "value": "002C0000"
+                        },
+                        {
+                            "label": "PLL input clock x 14.",
+                            "value": "00300000"
+                        },
+                        {
+                            "label": "PLL input clock x 15.",
+                            "value": "00340000"
+                        },
+                        {
+                            "label": "PLL input clock x 16.",
+                            "value": "00380000"
+                        },
+                        {
+                            "label": "PLL input clock x 17.",
+                            "value": "003C0000"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "MCO",
+                    "label": "Microcontroller clock output",
+                    "mask": "07000000",
+                    "settings": [
+                        {
+                            "label": "MCO output disabled, no clock on MCO",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "Reserved",
+                            "value": "01000000"
+                        },
+                        {
+                            "label": "LSI clock selected.",
+                            "value": "02000000"
+                        },
+                        {
+                            "label": "LSE clock selected.",
+                            "value": "03000000"
+                        },
+                        {
+                            "label": "System clock (SYSCLK) selected.",
+                            "value": "04000000"
+                        },
+                        {
+                            "label": "HSI clock selected.",
+                            "value": "05000000"
+                        },
+                        {
+                            "label": "HSE clock selected.",
+                            "value": "06000000"
+                        },
+                        {
+                            "label": "PLL clock divided by 2 selected.",
+                            "value": "07000000"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "SDPRE",
+                    "label": "SDADC prescaler",
+                    "mask": "F8000000",
+                    "settings": [
+                        {
+                            "label": "System clock divided by 2.",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "System clock divided by 2.",
+                            "value": "80000000"
+                        },
+                        {
+                            "label": "System clock divided by 4.",
+                            "value": "88000000"
+                        },
+                        {
+                            "label": "System clock divided by 6.",
+                            "value": "90000000"
+                        },
+                        {
+                            "label": "System clock divided by 8.",
+                            "value": "98000000"
+                        },
+                        {
+                            "label": "System clock divided by 10.",
+                            "value": "A0000000"
+                        },
+                        {
+                            "label": "System clock divided by 12.",
+                            "value": "A8000000"
+                        },
+                        {
+                            "label": "System clock divided by 14.",
+                            "value": "B0000000"
+                        },
+                        {
+                            "label": "System clock divided by 16.",
+                            "value": "B8000000"
+                        },
+                        {
+                            "label": "System clock divided by 20.",
+                            "value": "C0000000"
+                        },
+                        {
+                            "label": "System clock divided by 24.",
+                            "value": "C8000000"
+                        },
+                        {
+                            "label": "System clock divided by 28.",
+                            "value": "D0000000"
+                        },
+                        {
+                            "label": "System clock divided by 32.",
+                            "value": "D8000000"
+                        },
+                        {
+                            "label": "System clock divided by 36.",
+                            "value": "E0000000"
+                        },
+                        {
+                            "label": "System clock divided by 40.",
+                            "value": "E8000000"
+                        },
+                        {
+                            "label": "System clock divided by 44.",
+                            "value": "F0000000"
+                        },
+                        {
+                            "label": "System clock divided by 48.",
+                            "value": "F8000000"
+                        }
+                    ]
+                }
+            ],
+            "key": "RCC_CFGR",
+            "unused": "00000000"
+        },
+        {
+            "address": "4002102C",
+            "default": "00000000",
+            "fields": [
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "PREDIV1",
+                    "label": "PREDIV1 division factor",
+                    "mask": "00000000F",
+                    "settings": [
+                        {
+                            "label": "PREDIV1 input clock not divided",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "PREDIV1 input clock divided by 2",
+                            "value": "00000001"
+                        },
+                        {
+                            "label": "PREDIV1 input clock divided by 3",
+                            "value": "00000002"
+                        },
+                        {
+                            "label": "PREDIV1 input clock divided by 4",
+                            "value": "00000003"
+                        },
+                        {
+                            "label": "PREDIV1 input clock divided by 5",
+                            "value": "00000004"
+                        },
+                        {
+                            "label": "PREDIV1 input clock divided by 6",
+                            "value": "00000005"
+                        },
+                        {
+                            "label": "PREDIV1 input clock divided by 7",
+                            "value": "00000006"
+                        },
+                        {
+                            "label": "PREDIV1 input clock divided by 8",
+                            "value": "00000007"
+                        },
+                        {
+                            "label": "PREDIV1 input clock divided by 9",
+                            "value": "00000008"
+                        },
+                        {
+                            "label": "PREDIV1 input clock divided by 10",
+                            "value": "00000009"
+                        },
+                        {
+                            "label": "PREDIV1 input clock divided by 11",
+                            "value": "0000000A"
+                        },
+                        {
+                            "label": "PREDIV1 input clock divided by 12",
+                            "value": "0000000B"
+                        },
+                        {
+                            "label": "PREDIV1 input clock divided by 13",
+                            "value": "0000000C"
+                        },
+                        {
+                            "label": "PREDIV1 input clock divided by 14",
+                            "value": "0000000D"
+                        },
+                        {
+                            "label": "PREDIV1 input clock divided by 15",
+                            "value": "0000000E"
+                        },
+                        {
+                            "label": "PREDIV1 input clock divided by 16",
+                            "value": "0000000F"
+                        }
+                    ]
+                }
+            ],
+            "key": "RCC_CFGR2",
+            "unused": "00000000"
+        }
+    ],
+    "core": "M4EF",
+    "delay_src_path": "delays/m4ef/__lib_delays.c",
+    "clock": "1"
+}

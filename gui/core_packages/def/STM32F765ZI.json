@@ -1,0 +1,993 @@
+{
+    "config_registers": [
+        {
+            "address": "40023800",
+            "default": "00000000",
+            "fields": [
+                {
+                    "hidden": false,
+                    "init": "00000001",
+                    "key": "HSION",
+                    "label": "Internal high-speed clock enable",
+                    "mask": "00000001",
+                    "settings": [
+                        {
+                            "label": "HSI oscillator OFF",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "HSI oscillator ON",
+                            "value": "00000001"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "HSEON",
+                    "label": "External high-speed clock enable",
+                    "mask": "00010000",
+                    "settings": [
+                        {
+                            "label": "HSE oscillator OFF",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "HSE oscillator ON",
+                            "value": "00010000"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "HSEBYP",
+                    "label": "HSE clock bypass",
+                    "mask": "00040000",
+                    "settings": [
+                        {
+                            "label": "HSE oscillator not bypassed",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "HSE oscillator bypassed with external clock",
+                            "value": "00040000"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "CSSON",
+                    "label": "Clock security system enable",
+                    "mask": "00080000",
+                    "settings": [
+                        {
+                            "label": "Clock detector OFF",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "Clock security system ON (Clock detector ON if HSE oscillator is stable, OFF if not)",
+                            "value": "00080000"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "01000000",
+                    "key": "PLLON",
+                    "label": "Main PLL (PLL) enable",
+                    "mask": "01000000",
+                    "settings": [
+                        {
+                            "label": "PLL OFF",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "PLL ON",
+                            "value": "01000000"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "PLLI2SON",
+                    "label": "PLLI2S enable",
+                    "mask": "04000000",
+                    "settings": [
+                        {
+                            "label": "PLLI2S OFF",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "PLLI2S ON",
+                            "value": "04000000"
+                        }
+                    ]
+                },
+                {
+                    "hidden": true,
+                    "init": "00000080",
+                    "key": "HSITRIM",
+                    "label": "Internal high-speed clock trimming",
+                    "mask": "000000F8",
+                    "settings": [
+                        {
+                            "label": "The default value is 16, which, when added to the HSICAL value, should trim the HSI",
+                            "value": "00000080"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "PLLSAION",
+                    "label": "PLLSAI enable",
+                    "mask": "10000000",
+                    "settings": [
+                        {
+                            "label": "PLLSAI OFF",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "PLLSAI ON",
+                            "value": "10000000"
+                        }
+                    ]
+                }
+            ],
+            "key": "RCC_CR",
+            "unused": "00000000"
+        },
+        {
+            "address": "40023804",
+            "default": "00000000",
+            "fields": [
+                {
+                    "hidden": false,
+                    "init": "00000010",
+                    "key": "PLLM",
+                    "label": "Division factor for the main PLLs (PLL, PLLI2S and PLLSAI) input clock",
+                    "mask": "0000003F",
+                    "settings": [
+                        {
+                            "label": "PLLM = 2",
+                            "value": "00000002"
+                        },
+                        {
+                            "label": "PLLM = 3",
+                            "value": "00000003"
+                        },
+                        {
+                            "label": "PLLM = 4",
+                            "value": "00000004"
+                        },
+                        {
+                            "label": "PLLM = 5",
+                            "value": "00000005"
+                        },
+                        {
+                            "label": "PLLM = 6",
+                            "value": "00000006"
+                        },
+                        {
+                            "label": "PLLM = 7",
+                            "value": "00000007"
+                        },
+                        {
+                            "label": "PLLM = 8",
+                            "value": "00000008"
+                        },
+                        {
+                            "label": "PLLM = 9",
+                            "value": "00000009"
+                        },
+                        {
+                            "label": "PLLM = 10",
+                            "value": "0000000A"
+                        },
+                        {
+                            "label": "PLLM = 11",
+                            "value": "0000000B"
+                        },
+                        {
+                            "label": "PLLM = 12",
+                            "value": "0000000C"
+                        },
+                        {
+                            "label": "PLLM = 13",
+                            "value": "0000000D"
+                        },
+                        {
+                            "label": "PLLM = 14",
+                            "value": "0000000E"
+                        },
+                        {
+                            "label": "PLLM = 15",
+                            "value": "0000000F"
+                        },
+                        {
+                            "label": "PLLM = 16",
+                            "value": "00000010"
+                        },
+                        {
+                            "label": "PLLM = 17",
+                            "value": "00000011"
+                        },
+                        {
+                            "label": "PLLM = 18",
+                            "value": "00000012"
+                        },
+                        {
+                            "label": "PLLM = 19",
+                            "value": "00000013"
+                        },
+                        {
+                            "label": "PLLM = 20",
+                            "value": "00000014"
+                        },
+                        {
+                            "label": "PLLM = 21",
+                            "value": "00000015"
+                        },
+                        {
+                            "label": "PLLM = 22",
+                            "value": "00000016"
+                        },
+                        {
+                            "label": "PLLM = 23",
+                            "value": "00000017"
+                        },
+                        {
+                            "label": "PLLM = 24",
+                            "value": "00000018"
+                        },
+                        {
+                            "label": "PLLM = 25",
+                            "value": "00000019"
+                        },
+                        {
+                            "label": "PLLM = 26",
+                            "value": "0000001A"
+                        },
+                        {
+                            "label": "PLLM = 27",
+                            "value": "0000001B"
+                        },
+                        {
+                            "label": "PLLM = 28",
+                            "value": "0000001C"
+                        },
+                        {
+                            "label": "PLLM = 29",
+                            "value": "0000001D"
+                        },
+                        {
+                            "label": "PLLM = 30",
+                            "value": "0000001E"
+                        },
+                        {
+                            "label": "PLLM = 31",
+                            "value": "0000001F"
+                        },
+                        {
+                            "label": "PLLM = 32",
+                            "value": "00000020"
+                        },
+                        {
+                            "label": "PLLM = 33",
+                            "value": "00000021"
+                        },
+                        {
+                            "label": "PLLM = 34",
+                            "value": "00000022"
+                        },
+                        {
+                            "label": "PLLM = 35",
+                            "value": "00000023"
+                        },
+                        {
+                            "label": "PLLM = 36",
+                            "value": "00000024"
+                        },
+                        {
+                            "label": "PLLM = 37",
+                            "value": "00000025"
+                        },
+                        {
+                            "label": "PLLM = 38",
+                            "value": "00000026"
+                        },
+                        {
+                            "label": "PLLM = 39",
+                            "value": "00000027"
+                        },
+                        {
+                            "label": "PLLM = 40",
+                            "value": "00000028"
+                        },
+                        {
+                            "label": "PLLM = 41",
+                            "value": "00000029"
+                        },
+                        {
+                            "label": "PLLM = 42",
+                            "value": "0000002A"
+                        },
+                        {
+                            "label": "PLLM = 43",
+                            "value": "0000002B"
+                        },
+                        {
+                            "label": "PLLM = 44",
+                            "value": "0000002C"
+                        },
+                        {
+                            "label": "PLLM = 45",
+                            "value": "0000002D"
+                        },
+                        {
+                            "label": "PLLM = 46",
+                            "value": "0000002E"
+                        },
+                        {
+                            "label": "PLLM = 47",
+                            "value": "0000002F"
+                        },
+                        {
+                            "label": "PLLM = 48",
+                            "value": "00000030"
+                        },
+                        {
+                            "label": "PLLM = 49",
+                            "value": "00000031"
+                        },
+                        {
+                            "label": "PLLM = 50",
+                            "value": "00000032"
+                        },
+                        {
+                            "label": "PLLM = 51",
+                            "value": "00000033"
+                        },
+                        {
+                            "label": "PLLM = 52",
+                            "value": "00000034"
+                        },
+                        {
+                            "label": "PLLM = 53",
+                            "value": "00000035"
+                        },
+                        {
+                            "label": "PLLM = 54",
+                            "value": "00000036"
+                        },
+                        {
+                            "label": "PLLM = 55",
+                            "value": "00000037"
+                        },
+                        {
+                            "label": "PLLM = 56",
+                            "value": "00000038"
+                        },
+                        {
+                            "label": "PLLM = 57",
+                            "value": "00000039"
+                        },
+                        {
+                            "label": "PLLM = 58",
+                            "value": "0000003A"
+                        },
+                        {
+                            "label": "PLLM = 59",
+                            "value": "0000003B"
+                        },
+                        {
+                            "label": "PLLM = 60",
+                            "value": "0000003C"
+                        },
+                        {
+                            "label": "PLLM = 61",
+                            "value": "0000003D"
+                        },
+                        {
+                            "label": "PLLM = 62",
+                            "value": "0000003E"
+                        },
+                        {
+                            "label": "PLLM = 63",
+                            "value": "0000003F"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00006c00",
+                    "key": "PLLN",
+                    "label": "Main PLL (PLL) multiplication factor for VCO",
+                    "mask": "00007FC0",
+                    "settings_array": {
+                        "decrease": false,
+                        "disabled_when_zero": false,
+                        "inverted": false,
+                        "max_value": "432",
+                        "min_value": "50"
+                    }
+                },
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "PLLP",
+                    "label": "Main PLL (PLL) division factor for main system clock",
+                    "mask": "00030000",
+                    "settings": [
+                        {
+                            "label": "PLLP = 2",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "PLLP = 4",
+                            "value": "00010000"
+                        },
+                        {
+                            "label": "PLLP = 6",
+                            "value": "00020000"
+                        },
+                        {
+                            "label": "PLLP = 8",
+                            "value": "00030000"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "PLLSRC",
+                    "label": "Main PLL(PLL) and audio PLL (PLLI2S) entry clock source",
+                    "mask": "00400000",
+                    "settings": [
+                        {
+                            "label": "HSI clock selected as PLL and PLLI2S clock entry ",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "HSE oscillator clock selected as PLL and PLLI2S clock entry ",
+                            "value": "00400000"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "09000000",
+                    "key": "PLLQ",
+                    "label": "Main PLL (PLL) division factor for USB OTG FS, SDIO and random number generator clocks",
+                    "mask": "0F000000",
+                    "settings": [
+                        {
+                            "label": "PLLQ = 2 ",
+                            "value": "02000000"
+                        },
+                        {
+                            "label": "PLLQ = 3 ",
+                            "value": "03000000"
+                        },
+                        {
+                            "label": "PLLQ = 4 ",
+                            "value": "04000000"
+                        },
+                        {
+                            "label": "PLLQ = 5 ",
+                            "value": "05000000"
+                        },
+                        {
+                            "label": "PLLQ = 6 ",
+                            "value": "06000000"
+                        },
+                        {
+                            "label": "PLLQ = 7 ",
+                            "value": "07000000"
+                        },
+                        {
+                            "label": "PLLQ = 8 ",
+                            "value": "08000000"
+                        },
+                        {
+                            "label": "PLLQ = 9 ",
+                            "value": "09000000"
+                        },
+                        {
+                            "label": "PLLQ = 10 ",
+                            "value": "0A000000"
+                        },
+                        {
+                            "label": "PLLQ = 11 ",
+                            "value": "0B000000"
+                        },
+                        {
+                            "label": "PLLQ = 12 ",
+                            "value": "0C000000"
+                        },
+                        {
+                            "label": "PLLQ = 13 ",
+                            "value": "0D000000"
+                        },
+                        {
+                            "label": "PLLQ = 14 ",
+                            "value": "0E000000"
+                        },
+                        {
+                            "label": "PLLQ = 15 ",
+                            "value": "0F000000"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "20000000",
+                    "key": "PLLR",
+                    "label": "PLL division factor for DSI clock",
+                    "mask": "70000000",
+                    "settings": [
+                        {
+                            "label": "PLLR = 2 ",
+                            "value": "20000000"
+                        },
+                        {
+                            "label": "PLLR = 3 ",
+                            "value": "30000000"
+                        },
+                        {
+                            "label": "PLLR = 4 ",
+                            "value": "40000000"
+                        },
+                        {
+                            "label": "PLLR = 5 ",
+                            "value": "50000000"
+                        },
+                        {
+                            "label": "PLLR = 6 ",
+                            "value": "60000000"
+                        },
+                        {
+                            "label": "PLLR = 7 ",
+                            "value": "70000000"
+                        }
+                    ]
+                }
+            ],
+            "key": "RCC_PLLCFGR",
+            "unused": "00000000"
+        },
+        {
+            "address": "40023808",
+            "default": "00000000",
+            "fields": [
+                {
+                    "hidden": false,
+                    "init": "00000002",
+                    "key": "SW",
+                    "label": "System clock switch",
+                    "mask": "00000003",
+                    "settings": [
+                        {
+                            "label": "HSI selected as system clock",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "HSE selected as system clock",
+                            "value": "00000001"
+                        },
+                        {
+                            "label": "PLL selected as system clock",
+                            "value": "00000002"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "HPRE",
+                    "label": "Set and cleared by software to control the division factor of the AHB clock",
+                    "mask": "000000F0",
+                    "settings": [
+                        {
+                            "label": "SYSCLK not divided",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "SYSCLK divided by 2",
+                            "value": "00000080"
+                        },
+                        {
+                            "label": "SYSCLK divided by 4",
+                            "value": "00000090"
+                        },
+                        {
+                            "label": "SYSCLK divided by 8",
+                            "value": "000000A0"
+                        },
+                        {
+                            "label": "SYSCLK divided by 16",
+                            "value": "000000B0"
+                        },
+                        {
+                            "label": "SYSCLK divided by 64",
+                            "value": "000000C0"
+                        },
+                        {
+                            "label": "SYSCLK divided by 128",
+                            "value": "000000D0"
+                        },
+                        {
+                            "label": "SYSCLK divided by 256",
+                            "value": "000000E0"
+                        },
+                        {
+                            "label": "SYSCLK divided by 512",
+                            "value": "000000F0"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00001400",
+                    "key": "PPRE1",
+                    "label": "APB low-speed prescaler (APB1)",
+                    "mask": "00001C00",
+                    "settings": [
+                        {
+                            "label": "HCLK not divided ",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "HCLK divided by 2 ",
+                            "value": "00001000"
+                        },
+                        {
+                            "label": "HCLK divided by 4 ",
+                            "value": "00001400"
+                        },
+                        {
+                            "label": "HCLK divided by 8 ",
+                            "value": "00001800"
+                        },
+                        {
+                            "label": "HCLK divided by 16 ",
+                            "value": "00001C00"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00008000",
+                    "key": "PPRE2",
+                    "label": "APB high-speed prescaler (APB2)",
+                    "mask": "0000E000",
+                    "settings": [
+                        {
+                            "label": "HCLK not divided ",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "HCLK divided by 2 ",
+                            "value": "00008000"
+                        },
+                        {
+                            "label": "HCLK divided by 4 ",
+                            "value": "0000A000"
+                        },
+                        {
+                            "label": "HCLK divided by 8 ",
+                            "value": "0000C000"
+                        },
+                        {
+                            "label": "HCLK divided by 16 ",
+                            "value": "0000E000"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "RTCPRE",
+                    "label": "HSE division factor for RTC clock",
+                    "mask": "001F0000",
+                    "settings": [
+                        {
+                            "label": "no clock",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "no clock",
+                            "value": "00010000"
+                        },
+                        {
+                            "label": "HSE/2",
+                            "value": "00020000"
+                        },
+                        {
+                            "label": "HSE/3",
+                            "value": "00030000"
+                        },
+                        {
+                            "label": "HSE/4",
+                            "value": "00040000"
+                        },
+                        {
+                            "label": "HSE/5",
+                            "value": "00050000"
+                        },
+                        {
+                            "label": "HSE/6",
+                            "value": "00060000"
+                        },
+                        {
+                            "label": "HSE/7",
+                            "value": "00070000"
+                        },
+                        {
+                            "label": "HSE/8",
+                            "value": "00080000"
+                        },
+                        {
+                            "label": "HSE/9",
+                            "value": "00090000"
+                        },
+                        {
+                            "label": "HSE/10",
+                            "value": "000A0000"
+                        },
+                        {
+                            "label": "HSE/11",
+                            "value": "000B0000"
+                        },
+                        {
+                            "label": "HSE/12",
+                            "value": "000C0000"
+                        },
+                        {
+                            "label": "HSE/13",
+                            "value": "000D0000"
+                        },
+                        {
+                            "label": "HSE/14",
+                            "value": "000E0000"
+                        },
+                        {
+                            "label": "HSE/15",
+                            "value": "000F0000"
+                        },
+                        {
+                            "label": "HSE/16",
+                            "value": "00100000"
+                        },
+                        {
+                            "label": "HSE/17",
+                            "value": "00110000"
+                        },
+                        {
+                            "label": "HSE/18",
+                            "value": "00120000"
+                        },
+                        {
+                            "label": "HSE/19",
+                            "value": "00130000"
+                        },
+                        {
+                            "label": "HSE/20",
+                            "value": "00140000"
+                        },
+                        {
+                            "label": "HSE/21",
+                            "value": "00150000"
+                        },
+                        {
+                            "label": "HSE/22",
+                            "value": "00160000"
+                        },
+                        {
+                            "label": "HSE/23",
+                            "value": "00170000"
+                        },
+                        {
+                            "label": "HSE/24",
+                            "value": "00180000"
+                        },
+                        {
+                            "label": "HSE/25",
+                            "value": "00190000"
+                        },
+                        {
+                            "label": "HSE/26",
+                            "value": "001A0000"
+                        },
+                        {
+                            "label": "HSE/27",
+                            "value": "001B0000"
+                        },
+                        {
+                            "label": "HSE/28",
+                            "value": "001C0000"
+                        },
+                        {
+                            "label": "HSE/29",
+                            "value": "001D0000"
+                        },
+                        {
+                            "label": "HSE/30",
+                            "value": "001E0000"
+                        },
+                        {
+                            "label": "HSE/31",
+                            "value": "001F0000"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00600000",
+                    "key": "MCO1",
+                    "label": "Microcontroller clock output 1",
+                    "mask": "00600000",
+                    "settings": [
+                        {
+                            "label": "HSI clock selected ",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "LSE oscillator selected ",
+                            "value": "00200000"
+                        },
+                        {
+                            "label": "HSE oscillator clock selected ",
+                            "value": "00400000"
+                        },
+                        {
+                            "label": "PLL clock selected ",
+                            "value": "00600000"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "I2SSRC",
+                    "label": "I2S clock selection",
+                    "mask": "00800000",
+                    "settings": [
+                        {
+                            "label": "PLLI2S clock used as I2S clock source ",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "External clock mapped on the I2S_CKIN pin used as I2S clock source ",
+                            "value": "00800000"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "MCO1PRE",
+                    "label": "MCO1 prescaler",
+                    "mask": "07000000",
+                    "settings": [
+                        {
+                            "label": "no division ",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "division by 2 ",
+                            "value": "04000000"
+                        },
+                        {
+                            "label": "division by 3 ",
+                            "value": "05000000"
+                        },
+                        {
+                            "label": "division by 4 ",
+                            "value": "06000000"
+                        },
+                        {
+                            "label": "division by 5 ",
+                            "value": "07000000"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "MCO2PRE",
+                    "label": "MCO2PRE",
+                    "mask": "38000000",
+                    "settings": [
+                        {
+                            "label": "no division ",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "division by 2 ",
+                            "value": "20000000"
+                        },
+                        {
+                            "label": "division by 3 ",
+                            "value": "28000000"
+                        },
+                        {
+                            "label": "division by 4 ",
+                            "value": "30000000"
+                        },
+                        {
+                            "label": "division by 5 ",
+                            "value": "38000000"
+                        }
+                    ]
+                },
+                {
+                    "hidden": false,
+                    "init": "00000000",
+                    "key": "MCO2",
+                    "label": "Microcontroller clock output 2",
+                    "mask": "C0000000",
+                    "settings": [
+                        {
+                            "label": "System clock (SYSCLK) selected ",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "PLLI2S clock selected ",
+                            "value": "40000000"
+                        },
+                        {
+                            "label": "HSE oscillator clock selected ",
+                            "value": "80000000"
+                        },
+                        {
+                            "label": "PLL clock selected ",
+                            "value": "C0000000"
+                        }
+                    ]
+                }
+            ],
+            "key": "RCC_CFGR",
+            "unused": "00000000"
+        },
+        {
+            "address": "400FE070",
+            "default": "00000000",
+            "fields": [
+                {
+                    "hidden": false,
+                    "init": "00000003",
+                    "key": "VRANGE",
+                    "label": "Voltage range",
+                    "mask": "00000003",
+                    "settings": [
+                        {
+                            "label": "Voltage range = 1.8 to 2.1 V",
+                            "value": "00000000"
+                        },
+                        {
+                            "label": "Voltage range = 2.1 to 2.4 V",
+                            "value": "00000001"
+                        },
+                        {
+                            "label": "Voltage range = 2.4 to 2.7 V",
+                            "value": "00000002"
+                        },
+                        {
+                            "label": "Voltage range = 2.7 to 3.6 V",
+                            "value": "00000003"
+                        }
+                    ]
+                }
+            ],
+            "key": "SVRANGE",
+            "unused": "00000000"
+        }
+    ],
+    "core": "M7",
+    "delay_src_path": "delays/m7/__lib_delays.c",
+    "clock": "216"
+}

@@ -1,5 +1,5 @@
 /target
 /.vscode
 installer/*
-gui/core_packages/*
+# gui/core_packages/*
 core/core_header/*
