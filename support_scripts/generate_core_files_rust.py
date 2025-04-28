@@ -154,67 +154,90 @@ def format_with_rustfmt(file_path):
 def main():
     input_path = 'd:/work_mikroe/GIT/core_packages/ARM/gcc_clang/def'
     output_dir = 'gui/core_packages/def/stm'
+    input_path_linker = 'd:/work_mikroe/GIT/core_packages/ARM/gcc_clang/linker_scripts/stm'
+    output_dir_linker = 'gui/core_packages/memory/stm'
 
-    for root, _, files in os.walk(input_path):
-        for file in files:
-            dest_json = {}
-            if '.json' in file and 'STM32' in file:
-                if not os.path.exists(os.path.join('gui/core_packages/def', file)):
-                    with open(os.path.join(root, file), 'r', encoding='utf-8') as source_json_file:
-                        source_json = json.load(source_json_file)
-                    if 'config_registers' in source_json:
-                        if source_json['config_registers'] != []:
-                            dest_json['config_registers'] = source_json['config_registers']
-                            dest_json['core'] = source_json['core'].replace('M0EF', 'M0')
-                            dest_json['delay_src_path'] = source_json['delay_src_path'].replace('m0ef', 'm0')
-                            dest_json['clock'] = str(source_json['clock'])
-                            with open(os.path.join('gui/core_packages/def', file), 'w') as dest_json_file:
-                                json.dump(dest_json, dest_json_file, indent=4)
-                            print(f'Created {os.path.join("gui/core_packages/def", file)}')
-            if file.endswith('.h') and 'STM32' in root:
-                mcu_name = root.split(os.sep)[-1]
-                dest_dir = os.path.join(output_dir, mcu_name)
-                os.makedirs(dest_dir, exist_ok=True)
+    # for root, _, files in os.walk(input_path):
+    #     for file in files:
+    #         dest_json = {}
+    #         if '.json' in file and 'STM32' in file:
+    #             if not os.path.exists(os.path.join('gui/core_packages/def', file)):
+    #                 with open(os.path.join(root, file), 'r', encoding='utf-8') as source_json_file:
+    #                     source_json = json.load(source_json_file)
+    #                 if 'config_registers' in source_json:
+    #                     if source_json['config_registers'] != []:
+    #                         dest_json['config_registers'] = source_json['config_registers']
+    #                         dest_json['core'] = source_json['core'].replace('M0EF', 'M0')
+    #                         dest_json['delay_src_path'] = source_json['delay_src_path'].replace('m0ef', 'm0')
+    #                         dest_json['clock'] = str(source_json['clock'])
+    #                         with open(os.path.join('gui/core_packages/def', file), 'w') as dest_json_file:
+    #                             json.dump(dest_json, dest_json_file, indent=4)
+    #                         print(f'Created {os.path.join("gui/core_packages/def", file)}')
+    #         if file.endswith('.h') and 'STM32' in root:
+    #             mcu_name = root.split(os.sep)[-1]
+    #             dest_dir = os.path.join(output_dir, mcu_name)
+    #             os.makedirs(dest_dir, exist_ok=True)
 
-                with open(os.path.join(root, file), 'r', encoding='utf-8') as f:
-                    lines = f.readlines()
-                    for idx, line in enumerate(lines):
-                        if "Exported_macros" in line or 'INSTANCE' in line:
-                            lines = lines[:idx]
-                            break
+    #             with open(os.path.join(root, file), 'r', encoding='utf-8') as f:
+    #                 lines = f.readlines()
+    #                 for idx, line in enumerate(lines):
+    #                     if "Exported_macros" in line or 'INSTANCE' in line:
+    #                         lines = lines[:idx]
+    #                         break
 
-                defines = extract_defines(lines)
-                enum_items = extract_enum(lines, "IRQn_Type")
-                structs = extract_structs(lines)
+    #             defines = extract_defines(lines)
+    #             enum_items = extract_enum(lines, "IRQn_Type")
+    #             structs = extract_structs(lines)
 
-                rust_lines = []
+    #             rust_lines = []
 
-                if enum_items:
-                    rust_lines.append("#[repr(i32)]")
-                    rust_lines.append("pub enum IRQn_Type {")
-                    max_key_len = max(len(name) for name, _ in enum_items)
-                    for name, val in enum_items:
-                        spacing = ' ' * (max_key_len - len(name))
-                        rust_lines.append(f"    {name}{spacing}= {val},")
-                    rust_lines.append("}\n")
+    #             if enum_items:
+    #                 rust_lines.append("#[repr(i32)]")
+    #                 rust_lines.append("pub enum IRQn_Type {")
+    #                 max_key_len = max(len(name) for name, _ in enum_items)
+    #                 for name, val in enum_items:
+    #                     spacing = ' ' * (max_key_len - len(name))
+    #                     rust_lines.append(f"    {name}{spacing}= {val},")
+    #                 rust_lines.append("}\n")
 
-                for struct_name, fields in structs:
-                    rust_lines.append(rust_struct(struct_name, fields))
+    #             for struct_name, fields in structs:
+    #                 rust_lines.append(rust_struct(struct_name, fields))
                     
-                if defines:
-                    max_key_len = max(len(name) for name, _ in defines)
-                    for name, value in defines:
-                        spacing = ' ' * (max_key_len - len(name) + 1)
-                        rust_lines.append(f"pub const {name}{spacing}:u32 = {value};")
+    #             if defines:
+    #                 max_key_len = max(len(name) for name, _ in defines)
+    #                 for name, value in defines:
+    #                     spacing = ' ' * (max_key_len - len(name) + 1)
+    #                     rust_lines.append(f"pub const {name}{spacing}:u32 = {value};")
 
-                    rust_lines.append("")  # Blank line after defines
+    #                 rust_lines.append("")  # Blank line after defines
 
-                output_path = os.path.join(dest_dir, 'lib.rs')
-                with open(output_path, 'w', encoding='utf-8') as f:
-                    f.write('\n'.join(rust_lines))
+    #             output_path = os.path.join(dest_dir, 'lib.rs')
+    #             with open(output_path, 'w', encoding='utf-8') as f:
+    #                 f.write('\n'.join(rust_lines))
 
-                print(f"Created {output_path}")
-                format_with_rustfmt(output_path)
+    #             print(f"Created {output_path}")
+    #             format_with_rustfmt(output_path)
+
+    os.makedirs(output_dir_linker, exist_ok=True)
+    for file in os.listdir(input_path_linker):
+        memory_lines = ""
+        memory_found = False
+        with open(os.path.join(input_path_linker, file), 'r') as source_linker:
+            lines = source_linker.readlines()
+            for line in lines:
+                if 'MEMORY' in line:
+                    memory_found = True
+                if memory_found:
+                    memory_lines += line
+                    if '}' in line:
+                        break
+        if memory_lines != '':
+            os.makedirs(os.path.join(output_dir_linker, file.replace('.ld', '').upper()), exist_ok=True)
+            with open(os.path.join(output_dir_linker, file.replace('.ld', ''), 'memory.x'), 'w') as memory_file:
+                memory_file.write(f'/* memory.x - Linker script for the {file.replace('.ld', '').upper()} */\n{memory_lines}')
+            print(f'Created memory.x for {file.replace('.ld', '').upper()}')
+        else:
+            print(f'NO MEMORY FOUND FOR {file.replace('.ld', '').upper()}')
 
 if __name__ == '__main__':
     main()
