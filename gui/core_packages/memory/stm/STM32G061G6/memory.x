@@ -1,6 +1,6 @@
 /* memory.x - Linker script for the STM32G061G6 */
 MEMORY
 {
-  RAM    (xrw)    : ORIGIN = 0x20000000,   LENGTH = 18K
-  FLASH    (rx)    : ORIGIN = 0x8000000,   LENGTH = 32K
+  RAM    : ORIGIN = 0x20000000,   LENGTH = 18K
+  FLASH    : ORIGIN = 0x8000000,   LENGTH = 32K
 }

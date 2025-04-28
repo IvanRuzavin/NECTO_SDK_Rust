@@ -150,6 +150,9 @@ def format_with_rustfmt(file_path):
         print("Warning: rustfmt not found. Install it with `rustup component add rustfmt`")
     except subprocess.CalledProcessError:
         print(f"rustfmt failed formatting {file_path}")
+        
+def remove_parentheses_content(line):
+    return re.sub(r'\s*\([^)]*\)', '', line)
 
 def main():
     input_path = 'd:/work_mikroe/GIT/core_packages/ARM/gcc_clang/def'
@@ -228,7 +231,7 @@ def main():
                 if 'MEMORY' in line:
                     memory_found = True
                 if memory_found:
-                    memory_lines += line
+                    memory_lines += remove_parentheses_content(line)
                     if '}' in line:
                         break
         if memory_lines != '':
