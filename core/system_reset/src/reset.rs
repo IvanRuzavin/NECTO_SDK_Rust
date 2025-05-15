@@ -19,6 +19,5 @@ pub extern "C" fn Reset() -> ! {
         system_init();
         main(); 
     }
-    
     loop{} //this is a security as Reset must not return
 }

@@ -1,5 +1,5 @@
 [package]
-name = "system"
+name = "hal_pwm"
 version = "0.1.0"
 edition = "2024"
 author =  ["Leon Besnie leon.besnie@reseau.eseo.fr"]
@@ -16,6 +16,5 @@ lto = false
 
 
 [dependencies]
-mcu = { path = "../mcu"}
-common_header = { path = "../common_header"}
-system_reset = { path = "../system_reset" }
+hal_ll_tim = { path = "../../../hal_ll/tim/hal_ll_tim" }
+hal_target = { path = "../../interface"}
