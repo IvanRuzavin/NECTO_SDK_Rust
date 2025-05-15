@@ -187,6 +187,22 @@ class MCUConfigurator(QWidget):
             memory_x_contents = f.read()
         with open("memory.x", "w") as f:
             f.write(memory_x_contents)
+        
+        for file in os.listdir('core/system_reset/src'):
+            if '.s' in file:
+                os.remove(f'core/system_reset/src/{file}')
+        with open(f"gui/core_packages/startup/stm/{selected_mcu.lower()}.s", "r") as f:
+            startup_contents = f.read()
+        with open(f"core/system_reset/src/{selected_mcu.lower()}.s", "w") as f:
+            f.write(startup_contents)
+        with open(f"core/system_reset/src/reset.rs", "r") as f:
+            reset_lines = f.readlines()
+        with open(f"core/system_reset/src/reset.rs", "w") as f:
+            for line in reset_lines:
+                if 'global_asm!(include_str!' not in line:
+                    f.write(line)
+                else:
+                    f.write(f'global_asm!(include_str!("{selected_mcu.lower()}.s"));\n')
 
         QMessageBox.information(self, "Saved", "System core_header generated, MCU header placed properly, appropriate memory.x file prepared")
 
