@@ -158,7 +158,9 @@ def main():
     input_path = 'd:/work_mikroe/GIT/core_packages/ARM/gcc_clang/def'
     output_dir = 'gui/core_packages/def/stm'
     input_path_linker = 'd:/work_mikroe/GIT/core_packages/ARM/gcc_clang/linker_scripts/stm'
+    input_path_startup = 'd:/work_mikroe/GIT/core_packages/ARM/gcc_clang/startup/stm'
     output_dir_linker = 'gui/core_packages/memory/stm'
+    output_dir_startup = 'gui/core_packages/startup/stm'
 
     # for root, _, files in os.walk(input_path):
     #     for file in files:
@@ -221,27 +223,52 @@ def main():
     #             print(f"Created {output_path}")
     #             format_with_rustfmt(output_path)
 
-    os.makedirs(output_dir_linker, exist_ok=True)
-    for file in os.listdir(input_path_linker):
-        memory_lines = ""
-        memory_found = False
-        with open(os.path.join(input_path_linker, file), 'r') as source_linker:
-            linker_contents = source_linker.read()
-            # for line in lines:
-            #     if 'MEMORY' in line:
-            #         memory_found = True
-            #     if memory_found:
-            #         memory_lines += remove_parentheses_content(line)
-            #         if '}' in line:
-            #             break
-        # if memory_lines != '':
-        os.makedirs(os.path.join(output_dir_linker, file.replace('.ld', '').upper()), exist_ok=True)
-        with open(os.path.join(output_dir_linker, file.replace('.ld', ''), 'memory.x'), 'w') as memory_file:
-            memory_file.write(linker_contents)
-        print(f'Created memory.x for {file.replace('.ld', '').upper()}')
-        # else:
-        #     print(f'NO MEMORY FOUND FOR {file.replace('.ld', '').upper()}')
+    # os.makedirs(output_dir_linker, exist_ok=True)
+    # for file in os.listdir(input_path_linker):
+    #     memory_lines = ""
+    #     memory_found = False
+    #     with open(os.path.join(input_path_linker, file), 'r') as source_linker:
+    #         linker_contents = source_linker.read()
+    #         # for line in lines:
+    #         #     if 'MEMORY' in line:
+    #         #         memory_found = True
+    #         #     if memory_found:
+    #         #         memory_lines += remove_parentheses_content(line)
+    #         #         if '}' in line:
+    #         #             break
+    #     # if memory_lines != '':
+    #     os.makedirs(os.path.join(output_dir_linker, file.replace('.ld', '').upper()), exist_ok=True)
+    #     with open(os.path.join(output_dir_linker, file.replace('.ld', ''), 'memory.x'), 'w') as memory_file:
+    #         memory_file.write(linker_contents)
+    #     print(f'Created memory.x for {file.replace('.ld', '').upper()}')
+    #     # else:
+    #     #     print(f'NO MEMORY FOUND FOR {file.replace('.ld', '').upper()}')
         
+    os.makedirs(output_dir_startup, exist_ok=True)
+    for file in os.listdir(input_path_startup):
+        startup_lines = ""
+        clock_config_found = False
+        libc_config_found = False
+        with open(os.path.join(input_path_startup, file), 'r') as source_startup:
+            startup_contents = source_startup.readlines()
+        for line in startup_contents:
+            if 'systemInit' in line or 'clockConfig' in line:
+                clock_config_found = True
+                startup_lines += '//' + line
+            elif '__libc_init_array' in line:
+                libc_config_found = True
+                startup_lines += '//' + line
+            elif 'bl main' in line:
+                startup_lines += '//' + line + 'bl Reset\n'
+            else:
+                startup_lines += line
+        if clock_config_found and libc_config_found:
+            with open(os.path.join(output_dir_startup, file), 'w') as startup_file:
+                startup_file.write(startup_lines)
+        elif not clock_config_found:
+            print(f'NO CLOCK CONFIG LINE FOR {file}')
+        elif not libc_config_found:
+            print(f'NO LIBC CONFIG LINE FOR {file}')
     
 
 if __name__ == '__main__':
