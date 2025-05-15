@@ -1,4 +1,4 @@
-import os, re, subprocess, json
+import os, re, subprocess, json, shutil
 
 def clean_define_value(value):
     return value.replace('(', '').replace(')', '').replace('UL', '').replace('U', '').replace('~', '!').replace('uint16_t', '')
@@ -226,21 +226,23 @@ def main():
         memory_lines = ""
         memory_found = False
         with open(os.path.join(input_path_linker, file), 'r') as source_linker:
-            lines = source_linker.readlines()
-            for line in lines:
-                if 'MEMORY' in line:
-                    memory_found = True
-                if memory_found:
-                    memory_lines += remove_parentheses_content(line)
-                    if '}' in line:
-                        break
-        if memory_lines != '':
-            os.makedirs(os.path.join(output_dir_linker, file.replace('.ld', '').upper()), exist_ok=True)
-            with open(os.path.join(output_dir_linker, file.replace('.ld', ''), 'memory.x'), 'w') as memory_file:
-                memory_file.write(f'/* memory.x - Linker script for the {file.replace('.ld', '').upper()} */\n{memory_lines}')
-            print(f'Created memory.x for {file.replace('.ld', '').upper()}')
-        else:
-            print(f'NO MEMORY FOUND FOR {file.replace('.ld', '').upper()}')
+            linker_contents = source_linker.read()
+            # for line in lines:
+            #     if 'MEMORY' in line:
+            #         memory_found = True
+            #     if memory_found:
+            #         memory_lines += remove_parentheses_content(line)
+            #         if '}' in line:
+            #             break
+        # if memory_lines != '':
+        os.makedirs(os.path.join(output_dir_linker, file.replace('.ld', '').upper()), exist_ok=True)
+        with open(os.path.join(output_dir_linker, file.replace('.ld', ''), 'memory.x'), 'w') as memory_file:
+            memory_file.write(linker_contents)
+        print(f'Created memory.x for {file.replace('.ld', '').upper()}')
+        # else:
+        #     print(f'NO MEMORY FOUND FOR {file.replace('.ld', '').upper()}')
+        
+    
 
 if __name__ == '__main__':
     main()
