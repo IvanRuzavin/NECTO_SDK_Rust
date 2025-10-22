@@ -15,7 +15,7 @@ from project_setup_application import MCUConfigurator
 VS_TOOLS_URL = "https://aka.ms/vs/17/release/vs_BuildTools.exe"
 RUST_URL = "https://static.rust-lang.org/rustup/dist/x86_64-pc-windows-msvc/rustup-init.exe"
 ST_LINK_RAR_URL = "https://download.mikroe.com/setups/drivers/mikroprog/arm/st-link-usb-drivers.rar"
-OPENOCD_URL = "https://sourceforge.net/projects/openocd-xpack/files/latest/download"
+OPENOCD_URL = "https://github.com/xpack-dev-tools/openocd-xpack/releases/download/v0.12.0-7/xpack-openocd-0.12.0-7-win32-x64.zip"
 ARM_NONE_EABI_URL = "https://github.com/xpack-dev-tools/arm-none-eabi-gcc-xpack/releases/download/v14.2.1-1.1/xpack-arm-none-eabi-gcc-14.2.1-1.1-win32-x64.zip"
 PROBE_RS_PS_COMMAND = (
     'powershell -ExecutionPolicy Bypass -c "irm https://github.com/probe-rs/probe-rs/releases/download/v0.27.0/probe-rs-tools-installer.ps1 | iex"'
@@ -60,7 +60,7 @@ def run_powershell_command(command):
 
 def copy_to_clipboard(text):
     QGuiApplication.clipboard().setText(text)
-    
+
 
 # Main Window
 class RustInstallerApp(QWidget):
