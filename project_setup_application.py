@@ -4,26 +4,53 @@ import json
 import sqlite3
 from PyQt6.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QComboBox,
-    QLineEdit, QPushButton, QFileDialog, QScrollArea, QFormLayout, QMessageBox, QCompleter
+    QLineEdit, QPushButton, QFileDialog, QScrollArea, QFormLayout, QMessageBox, QCompleter,
+    QTextEdit,
 )
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QThread, pyqtSignal
+
+
+class CommandRunner(QThread):
+    """Runs terminal commands and sends real-time output to the GUI."""
+    output = pyqtSignal(str)
+    finished = pyqtSignal()
+
+    def __init__(self, command, cwd=None):
+        super().__init__()
+        self.command = command
+        self.cwd = cwd
+
+    def run(self):
+        process = subprocess.Popen(
+            self.command,
+            shell=True,
+            cwd=self.cwd,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            bufsize=1
+        )
+        for line in process.stdout:
+            self.output.emit(line)
+        process.wait()
+        self.finished.emit()
+
 
 class ProjectWindow(QWidget):
-    def __init__(self):
+    def __init__(self, mcu_name):
         super().__init__()
         self.setWindowTitle("Rust Project Builder")
-        self.setMinimumSize(600, 400)
+        self.setMinimumSize(700, 500)
 
         layout = QVBoxLayout()
         label = QLabel("System setup saved successfully!\nNow you can build or flash the project.")
-        project_label = QLabel("Project:")
         label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
+        project_label = QLabel("Project:")
         project_list = os.listdir(os.path.join(os.getcwd(), 'test'))
         self.project_combo = QComboBox()
         self.project_combo.setEditable(False)
         self.project_combo.addItems(project_list)
-
 
         choose_project_button = QPushButton("Choose Project")
         build_button = QPushButton("Build Project")
@@ -33,9 +60,19 @@ class ProjectWindow(QWidget):
 
         choose_project_button.clicked.connect(self.configure_main_project)
         build_button.clicked.connect(self.build_project)
-        flash_button.clicked.connect(self.run_project)
-        erase_button.clicked.connect(self.erase_mcu)
+        flash_button.clicked.connect(lambda: self.flash_project(mcu_name))
+        erase_button.clicked.connect(lambda: self.erase_mcu(mcu_name))
         close_button.clicked.connect(self.close)
+
+        # Terminal-like output area
+        self.output_box = QTextEdit()
+        self.output_box.setReadOnly(True)
+        self.output_box.setStyleSheet("""
+            background-color: #111;
+            color: #0f0;
+            font-family: Consolas, monospace;
+            font-size: 12px;
+        """)
 
         layout.addWidget(label)
         layout.addWidget(project_label)
@@ -45,7 +82,27 @@ class ProjectWindow(QWidget):
         layout.addWidget(flash_button)
         layout.addWidget(erase_button)
         layout.addWidget(close_button)
+        layout.addWidget(QLabel("Output:"))
+        layout.addWidget(self.output_box)
+
         self.setLayout(layout)
+        self.worker = None  # Will store QThread for subprocess
+
+    def log(self, text):
+        self.output_box.append(text)
+        self.output_box.ensureCursorVisible()
+
+    def run_command(self, command, cwd=None):
+        if self.worker and self.worker.isRunning():
+            self.log("Another command is already running.")
+            return
+        self.output_box.clear()
+        self.log(f"$ {command}\n")
+
+        self.worker = CommandRunner(command, cwd)
+        self.worker.output.connect(self.log)
+        self.worker.finished.connect(lambda: self.log("\nCommand finished.\n"))
+        self.worker.start()
 
     def configure_main_project(self):
         selected_project = self.project_combo.currentText()
@@ -53,18 +110,16 @@ class ProjectWindow(QWidget):
             project_content = source_project.read()
         with open(os.path.join(os.getcwd(), 'src', 'main.rs'), 'w') as dest_project:
             dest_project.write(project_content)
-
-    def erase_mcu(self):
-        subprocess.run('probe-rs erase --chip STM32L476RG')
+        self.log(f"Project {selected_project} configured.\n")
 
     def build_project(self):
-        subprocess.run('cargo build')
+        self.run_command("cargo build")
 
-    def run_project(self):
-        subprocess.run('cargo build')
-        subprocess.run('cargo flash --chip STM32F407ZG --connect-under-reset')
+    def flash_project(self, mcu_name):
+        self.run_command(f"cargo flash --chip {mcu_name} --connect-under-reset")
 
-
+    def erase_mcu(self, mcu_name):
+        self.run_command(f"probe-rs erase --chip {mcu_name}")
 
 
 class MCUConfigurator(QWidget):
@@ -368,7 +423,7 @@ class MCUConfigurator(QWidget):
         QMessageBox.information(self, "Success", "System parameters saved successfully!")
 
         # Open the project window
-        self.project_window = ProjectWindow()
+        self.project_window = ProjectWindow(selected_mcu)
         self.project_window.show()
 
         # Close the current setup window
