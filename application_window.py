@@ -15,11 +15,14 @@ from project_setup_application import MCUConfigurator
 VS_TOOLS_URL = "https://aka.ms/vs/17/release/vs_BuildTools.exe"
 RUST_URL = "https://static.rust-lang.org/rustup/dist/x86_64-pc-windows-msvc/rustup-init.exe"
 ST_LINK_RAR_URL = "https://download.mikroe.com/setups/drivers/mikroprog/arm/st-link-usb-drivers.rar"
+OPENOCD_URL = "https://sourceforge.net/projects/openocd-xpack/files/latest/download"
+ARM_NONE_EABI_URL = "https://github.com/xpack-dev-tools/arm-none-eabi-gcc-xpack/releases/download/v14.2.1-1.1/xpack-arm-none-eabi-gcc-14.2.1-1.1-win32-x64.zip"
 PROBE_RS_PS_COMMAND = (
     'powershell -ExecutionPolicy Bypass -c "irm https://github.com/probe-rs/probe-rs/releases/download/v0.27.0/probe-rs-tools-installer.ps1 | iex"'
 )
 
 INSTALLER_DIR = os.path.join(os.getcwd(), "installer")
+RUNNER_DIR = os.path.join(os.getcwd(), "runner")
 os.makedirs(INSTALLER_DIR, exist_ok=True)
 
 # Helper Functions
@@ -39,6 +42,16 @@ def download_and_extract_rar(url):
         patoolib.extract_archive(rar_path, outdir=INSTALLER_DIR)
         os.remove(rar_path)
         subprocess.run(["explorer", INSTALLER_DIR])
+    except Exception as e:
+        QMessageBox.critical(None, "RAR Extraction Error", f"Failed to handle RAR: {e}")
+
+def download_and_extract_rar_runner(url):
+    try:
+        import patoolib
+        rar_path = os.path.join(INSTALLER_DIR, "st-link.rar")
+        urllib.request.urlretrieve(url, rar_path)
+        patoolib.extract_archive(rar_path, outdir=RUNNER_DIR)
+        os.remove(rar_path)
     except Exception as e:
         QMessageBox.critical(None, "RAR Extraction Error", f"Failed to handle RAR: {e}")
 
@@ -159,6 +172,20 @@ class InstallStepsWindow(QMainWindow):
             PROBE_RS_PS_COMMAND,
             "Execute",
             lambda: run_powershell_command(PROBE_RS_PS_COMMAND)
+        ))
+
+        layout.addLayout(step_row(
+            f"5) Install OpenOCD runner:\n{OPENOCD_URL}",
+            OPENOCD_URL,
+            "Download",
+            lambda: download_and_extract_rar_runner(OPENOCD_URL)
+        ))
+
+        layout.addLayout(step_row(
+            f"6) Install ARM None Eabi runner:\n{ARM_NONE_EABI_URL}",
+            ARM_NONE_EABI_URL,
+            "Download",
+            lambda: download_and_extract_rar_runner(ARM_NONE_EABI_URL)
         ))
 
         container.setLayout(layout)
