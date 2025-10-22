@@ -159,7 +159,7 @@ gpiog_13 = []
 gpiog_14 = []
 gpiog_15 = []
 
-gpioh = ["gpioh_0","gpioh_1","gpioh_2","gpioh_3","gpioh_4","gpioh_5","gpioh_6","gpioh_7"]
+gpioh = ["gpioh_0","gpioh_1"]
 
 gpioh_0 = []
 gpioh_1 = []
@@ -178,7 +178,7 @@ gpioh_13 = []
 gpioh_14 = []
 gpioh_15 = []
 
-gpioi = ["gpioi_0","gpioi_1","gpioi_3","gpioi_4","gpioi_5","gpioi_6","gpioi_7","gpioi_8","gpioi_9","gpioi_10","gpioi_11"]
+gpioi = []
 
 gpioi_0 = []
 gpioi_1 = []
@@ -303,7 +303,7 @@ i2c1_sda_b7_af4 = []
 i2c1_sda_b9_af4 = []
 
 
-i2c2 = ["i2c2_scl_b10_af4","i2c2_scl_f1_af4","i2c2_scl_h4_af4","i2c2_sda_b11_af4","i2c2_sda_f0_af4","i2c2_sda_h5_af4"]
+i2c2 = ["i2c2_scl_b10_af4","i2c2_scl_f1_af4","i2c2_sda_b11_af4","i2c2_sda_f0_af4"]
 
 i2c2_scl_b10_af4 = []
 i2c2_scl_f1_af4 = []
@@ -316,7 +316,7 @@ i2c2_sda_f0_af4 = []
 i2c2_sda_h5_af4 = []
 
 
-i2c3 = ["i2c3_scl_a8_af4","i2c3_scl_h7_af4","i2c3_sda_c9_af4"]
+i2c3 = ["i2c3_scl_a8_af4","i2c3_sda_c9_af4"]
 
 i2c3_scl_a8_af4 = []
 i2c3_scl_h7_af4 = []
@@ -339,7 +339,7 @@ spi1_mosi_a7_af5 = []
 spi1_mosi_b5_af5 = []
 
 
-spi2 = ["spi2_sck_a9_af5","spi2_sck_b10_af5","spi2_sck_b13_af5","spi2_miso_b14_af5","spi2_mosi_b15_af5","spi2_mosi_c1_af5","spi2_miso_c2_af5","spi2_mosi_c3_af5","spi2_sck_d3_af5","spi2_sck_i1_af5","spi2_mosi_i3_af5"]
+spi2 = ["spi2_sck_b10_af5","spi2_sck_b13_af5","spi2_miso_b14_af5","spi2_mosi_b15_af5","spi2_miso_c2_af5","spi2_mosi_c3_af5"]
 
 spi2_sck_a9_af5 = []
 spi2_sck_b10_af5 = []
@@ -358,7 +358,7 @@ spi2_mosi_c3_af5 = []
 spi2_mosi_i3_af5 = []
 
 
-spi3 = ["spi3_mosi_d6_af5","spi3_miso_b4_af6","spi3_mosi_b5_af6","spi3_sck_c10_af6","spi3_miso_c11_af6","spi3_mosi_c12_af6"]
+spi3 = ["spi3_sck_b3_af6","spi3_miso_b4_af6","spi3_mosi_b5_af6","spi3_sck_c10_af6","spi3_miso_c11_af6","spi3_mosi_c12_af6"]
 
 spi3_sck_b3_af6 = []
 spi3_sck_c10_af6 = []
@@ -372,7 +372,7 @@ spi3_mosi_b5_af6 = []
 spi3_mosi_c12_af6 = []
 
 
-spi4 = ["spi4_sck_e2_af5","spi4_miso_e5_af5","spi4_mosi_e6_af5","spi4_sck_e12_af5","spi4_miso_e13_af5","spi4_mosi_e14_af5"]
+spi4 = []
 
 spi4_sck_e2_af5 = []
 spi4_sck_e12_af5 = []
@@ -387,7 +387,7 @@ spi4_miso_e13_af5 = []
 spi4_miso_a11_af6 = []
 
 
-spi5 = ["spi5_sck_f7_af5","spi5_miso_f8_af5","spi5_mosi_f9_af5","spi5_mosi_f11_af5","spi5_sck_h6_af5","spi5_miso_h7_af5"]
+spi5 = []
 
 spi5_sck_f7_af5 = []
 spi5_sck_h6_af5 = []
@@ -410,7 +410,7 @@ spi5_mosi_e6_af6 = []
 spi5_mosi_e14_af6 = []
 
 
-spi6 = ["spi6_miso_g12_af5","spi6_sck_g13_af5","spi6_mosi_g14_af5"]
+spi6 = []
 
 spi6_sck_g13_af5 = []
 
@@ -439,7 +439,7 @@ tim1_ch3n_e12_af1 = []
 tim1_ch3_e13_af1 = []
 tim1_ch4_e14_af1 = []
 
-tim2 = ["tim2_ch1_a0_af1","tim2_ch2_a1_af1","tim2_ch3_a2_af1","tim2_ch4_a3_af1","tim2_ch1_a5_af1","tim2_ch1_a15_af1","tim2_ch2_b3_af1","tim2_ch3_b10_af1","tim2_ch4_b11_af1"]
+tim2 = ["tim2_ch1_a0_af1","tim2_ch1_a5_af1","tim2_ch2_a1_af1","tim2_ch3_a2_af1","tim2_ch4_a3_af1","tim2_ch1_a15_af1","tim2_ch2_b3_af1","tim2_ch3_b10_af1","tim2_ch4_b11_af1"]
 
 tim2_ch1_a0_af1 = []
 tim2_ch2_a1_af1 = []
@@ -475,25 +475,31 @@ tim4_ch2_d13_af2 = []
 tim4_ch3_d14_af2 = []
 tim4_ch4_d15_af2 = []
 
-tim5 = ["tim5_ch1_a0_af2","tim5_ch2_a1_af2","tim5_ch3_a2_af2","tim5_ch4_a3_af2","tim5_ch4_i0_af2"]
+tim5 = ["tim5_ch1_a0_af2","tim5_ch2_a1_af2","tim5_ch3_a2_af2","tim5_ch4_a3_af2"]
 
 tim5_ch1_a0_af2 = []
+tim5_ch1_h10_af2 = []
 tim5_ch2_a1_af2 = []
+tim5_ch2_h11_af2 = []
 tim5_ch3_a2_af2 = []
+tim5_ch3_h12_af2 = []
 tim5_ch4_a3_af2 = []
 tim5_ch4_i0_af2 = []
 
-tim8 = ["tim8_ch1_c6_af3","tim8_ch1_i5_af3","tim8_ch1n_a5_af3","tim8_ch1n_a7_af3","tim8_ch2_c7_af3","tim8_ch2_i6_af3","tim8_ch2n_b0_af3","tim8_ch2n_b14_af3","tim8_ch3_c8_af3","tim8_ch3_i7_af3","tim8_ch3n_b1_af3","tim8_ch3n_b15_af3","tim8_ch4_c9_af3"]
+tim8 = ["tim8_ch1_c6_af3","tim8_ch1n_a5_af3","tim8_ch1n_a7_af3","tim8_ch2_c7_af3","tim8_ch2n_b0_af3","tim8_ch2n_b14_af3","tim8_ch3_c8_af3","tim8_ch3n_b1_af3","tim8_ch3n_b15_af3","tim8_ch4_c9_af3"]
 
 tim8_ch1_c6_af3 = []
 tim8_ch1n_a5_af3 = []
 tim8_ch1n_a7_af3 = []
+tim8_ch1n_h13_af3 = []
 tim8_ch2_c7_af3 = []
 tim8_ch2n_b0_af3 = []
 tim8_ch2n_b14_af3 = []
+tim8_ch2n_h14_af3 = []
 tim8_ch3_c8_af3 = []
 tim8_ch3n_b1_af3 = []
 tim8_ch3n_b15_af3 = []
+tim8_ch3n_h15_af3 = []
 tim8_ch4_c9_af3 = []
 tim8_ch1_i5_af3 = []                  
 tim8_ch3_i7_af3 = []
@@ -517,11 +523,12 @@ tim11 = ["tim11_ch1_b9_af3","tim11_ch1_f7_af3"]
 tim11_ch1_b9_af3 = []
 tim11_ch1_f7_af3 = []
 
-tim12 = ["tim12_ch1_b14_af9","tim12_ch1_h6_af9","tim12_ch2_b15_af9"]
+tim12 = ["tim12_ch1_b14_af9","tim12_ch2_b15_af9"]
 
 tim12_ch1_b14_af9 = []
-tim12_ch2_b15_af9 = []
 tim12_ch1_h6_af9 = []
+tim12_ch2_b15_af9 = []
+tim12_ch2_h9_af9 = []
 
 tim13 = ["tim13_ch1_a6_af9","tim13_ch1_f8_af9"]
 
@@ -581,14 +588,14 @@ uart6_tx_a11_af8 = []
 uart6_tx_c6_af8 = []
 uart6_tx_g14_af8 = []
 
-uart7 = ["uart7_rx_e7_af8","uart7_rx_f6_af8","uart7_tx_e8_af8","uart7_tx_f7_af8"]
+uart7 = []
 
 uart7_rx_e7_af8 = []
 uart7_rx_f6_af8 = []
 uart7_tx_e8_af8 = []
 uart7_tx_f7_af8 = []
 
-uart8 = ["uart8_rx_e0_af8","uart8_tx_e1_af8"]
+uart8 = []
 
 uart8_rx_e0_af8 = []
 uart8_tx_e1_af8 = []

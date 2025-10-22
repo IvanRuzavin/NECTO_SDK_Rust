@@ -16,27 +16,35 @@ lto = false
 
 
 [dependencies]
-hal_ll_target = {path = "hal_ll_target"}
 hal_ll_gpio_constants = {path = "gpio/hal_ll_gpio_constants"}
+hal_ll_target_names = {path = "hal_ll_target_names"}
 system = {path = "../core/system"}
+bit_control = {path = "../core/bit_control"}
 mcu_definition = {path = "../family_definitions/stm/f4"}
 
 interrupt = {path = "../core/interrupt", optional = true}
 
 [features]
-default = ["gpioa","gpiob","gpioc","gpiod","gpioe","gpiof","gpiog","gpioh","gpioi"]
+default = ["family", "gpioa","gpiob","gpioc","gpiod","gpioe","gpiof","gpiog","gpioh"]
 
-gpioa = ["hal_ll_target/gpioa"]
-gpiob = ["hal_ll_target/gpiob"]
-gpioc = ["hal_ll_target/gpioc"]
-gpiod = ["hal_ll_target/gpiod"]
-gpioe = ["hal_ll_target/gpioe"]
-gpiof = ["hal_ll_target/gpiof"]
-gpiog = ["hal_ll_target/gpiog"]
-gpioh = ["hal_ll_target/gpioh"]
-gpioi = ["hal_ll_target/gpioi"]
-gpioj = ["hal_ll_target/gpioj"]
-gpiok = ["hal_ll_target/gpiok"]
+family = ["f4"]
+
+f2 = []
+f4 = []
+f7 = []
+l1 = []
+
+gpioa = ["mcu_definition/gpioa"]
+gpiob = ["mcu_definition/gpiob"]
+gpioc = ["mcu_definition/gpioc"]
+gpiod = ["mcu_definition/gpiod"]
+gpioe = ["mcu_definition/gpioe"]
+gpiof = ["mcu_definition/gpiof"]
+gpiog = ["mcu_definition/gpiog"]
+gpioh = ["mcu_definition/gpioh"]
+gpioi = ["mcu_definition/gpioi"]
+gpioj = ["mcu_definition/gpioj"]
+gpiok = ["mcu_definition/gpiok"]
 
 adc = ["mcu_definition/adc", "adc1","adc2","adc3"]
 
@@ -49,8 +57,9 @@ i2c = ["mcu_definition/i2c","i2c1","i2c2","i2c3"]
 i2c1 = ["mcu_definition/i2c1"]
 i2c2 = ["mcu_definition/i2c2"]
 i2c3 = ["mcu_definition/i2c3"]
+i2c4 = ["mcu_definition/i2c4"]
 
-spi = ["mcu_definition/spi","spi1","spi2","spi3","spi4","spi5","spi6"]
+spi = ["mcu_definition/spi","spi1","spi2","spi3"]
 
 spi1 = ["mcu_definition/spi1"]
 spi2 = ["mcu_definition/spi2"]
@@ -74,7 +83,7 @@ tim12 = ["mcu_definition/tim12"]
 tim13 = ["mcu_definition/tim13"]
 tim14 = ["mcu_definition/tim14"]
 
-uart = ["mcu_definition/uart", "dep:interrupt","uart1","uart2","uart3","uart4","uart5","uart6","uart7","uart8"]
+uart = ["mcu_definition/uart", "dep:interrupt","uart1","uart2","uart3","uart4","uart5","uart6"]
 
 uart1 = ["mcu_definition/uart1"]
 uart2 = ["mcu_definition/uart2"]
