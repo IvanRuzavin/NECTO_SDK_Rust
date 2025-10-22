@@ -1,4 +1,4 @@
-import os
+import os, subprocess
 import sys
 import json
 import sqlite3
@@ -7,6 +7,65 @@ from PyQt6.QtWidgets import (
     QLineEdit, QPushButton, QFileDialog, QScrollArea, QFormLayout, QMessageBox, QCompleter
 )
 from PyQt6.QtCore import Qt
+
+class ProjectWindow(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Rust Project Builder")
+        self.setMinimumSize(600, 400)
+
+        layout = QVBoxLayout()
+        label = QLabel("System setup saved successfully!\nNow you can build or flash the project.")
+        project_label = QLabel("Project:")
+        label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        project_list = os.listdir(os.path.join(os.getcwd(), 'test'))
+        self.project_combo = QComboBox()
+        self.project_combo.setEditable(False)
+        self.project_combo.addItems(project_list)
+
+
+        choose_project_button = QPushButton("Choose Project")
+        build_button = QPushButton("Build Project")
+        flash_button = QPushButton("Flash MCU")
+        erase_button = QPushButton("Erase MCU")
+        close_button = QPushButton("Close")
+
+        choose_project_button.clicked.connect(self.configure_main_project)
+        build_button.clicked.connect(self.build_project)
+        flash_button.clicked.connect(self.run_project)
+        erase_button.clicked.connect(self.erase_mcu)
+        close_button.clicked.connect(self.close)
+
+        layout.addWidget(label)
+        layout.addWidget(project_label)
+        layout.addWidget(self.project_combo)
+        layout.addWidget(choose_project_button)
+        layout.addWidget(build_button)
+        layout.addWidget(flash_button)
+        layout.addWidget(erase_button)
+        layout.addWidget(close_button)
+        self.setLayout(layout)
+
+    def configure_main_project(self):
+        selected_project = self.project_combo.currentText()
+        with open(os.path.join(os.getcwd(), 'test', selected_project, 'main.rs'), 'r') as source_project:
+            project_content = source_project.read()
+        with open(os.path.join(os.getcwd(), 'src', 'main.rs'), 'w') as dest_project:
+            dest_project.write(project_content)
+
+    def erase_mcu(self):
+        subprocess.run('probe-rs erase --chip STM32L476RG')
+
+    def build_project(self):
+        subprocess.run('cargo build')
+
+    def run_project(self):
+        subprocess.run('cargo build')
+        subprocess.run('cargo flash --chip STM32F407ZG --connect-under-reset')
+
+
+
 
 class MCUConfigurator(QWidget):
     def __init__(self):
@@ -19,7 +78,7 @@ class MCUConfigurator(QWidget):
 
         self.database = sqlite3.connect("project_setup\database\database_mikro_sdk_rust.db")
         self.db_cursor = self.database.cursor()
-        
+
         self.init_ui()
 
 
@@ -71,7 +130,7 @@ class MCUConfigurator(QWidget):
         self.save_button = QPushButton("Save System Parameters")
         self.save_button.clicked.connect(self.save_parameters)
         layout.addWidget(self.save_button)
-    
+
     def load_mcu_config(self, mcu_name):
         self.field_widgets.clear()
         selected_mcu = self.mcu_combo.currentText()
@@ -81,7 +140,7 @@ class MCUConfigurator(QWidget):
             return
         query_data = query_result[0]
         vendor = query_data[0]
-        
+
         # Clear previous content
         for i in reversed(range(self.form_layout.count())):
             widget = self.form_layout.itemAt(i).widget()
@@ -122,7 +181,7 @@ class MCUConfigurator(QWidget):
                         combo.addItem(setting["label"], setting["value"])
                         if init_value.lower() == setting["value"].lower():
                             selected_index = i
-                
+
                 elif "settings_array" in field:
                     settings = field["settings_array"]
                     min_val = int(settings["min_value"])
@@ -131,7 +190,7 @@ class MCUConfigurator(QWidget):
                     values = list(range(min_val, max_val + 1))
                     if inverted:
                         values = list(reversed(values))
-                    
+
                     init_value_array = "0x" + init_value.lstrip('0')
 
                     for i, val in enumerate(values):
@@ -141,13 +200,13 @@ class MCUConfigurator(QWidget):
                         combo.addItem(f"{field_key} = {val}", val_hex)
                         if init_value_array == val_hex:
                             selected_index = i
-                
+
                 if selected_index != -1:
                     combo.setCurrentIndex(selected_index)
 
                 self.form_layout.addRow(QLabel(label), combo)
                 self.field_widgets.setdefault(combined_key, []).append((mask, combo))
-    
+
     def save_parameters(self):
         selected_mcu = self.mcu_combo.currentText()
         self.db_cursor.execute(f"SELECT FAMILY.* FROM MCU JOIN FAMILY ON MCU.FAMILY = FAMILY.NAME WHERE MCU.NAME = '{selected_mcu}'")
@@ -155,7 +214,7 @@ class MCUConfigurator(QWidget):
         family_path = query_result[1]
         vendor = query_result[2]
         target = query_result[3]
-        gpio = query_result[4] 
+        gpio = query_result[4]
         adc = query_result[5]
         i2c = query_result[6]
         spi = query_result[7]
@@ -199,7 +258,7 @@ class MCUConfigurator(QWidget):
             sub_module_list = sub_module_list.rstrip(',')
             hal_ll_template = hal_ll_template.replace(f"{{{module_name}}}", sub_module_list)
             query_result_path_index += 1
-        
+
         hal_ll_template = hal_ll_template.replace(f"{{family}}", family_path)
 
 
@@ -208,7 +267,7 @@ class MCUConfigurator(QWidget):
             implementation = f.read()
         with open("hal_ll/src/gpio_port.rs", "w") as f:
             f.write(implementation)
-        
+
         with open(f"hal_ll/adc/{adc}/adc.rs", "r") as f:
             implementation = f.read()
         with open("hal_ll/src/adc.rs", "w") as f:
@@ -235,13 +294,13 @@ class MCUConfigurator(QWidget):
             f.write(implementation)
 
 
-        
+
 
         with open(f"family_definitions/{vendor}/{family_path}/Cargo.toml", "w") as f:
             f.write(family_template)
         with open("hal_ll/Cargo.toml", "w") as f:
             f.write(hal_ll_template)
-        
+
         with open(f"project_setup/core_packages/memory/{vendor}/{selected_mcu}/memory.x", "r") as f:
             memory_x_contents = f.read()
         with open("memory.x", "w") as f:
@@ -302,6 +361,18 @@ class MCUConfigurator(QWidget):
             system_contents = f.read()
         with open("core/system/src/lib.rs", "w") as f:
             f.write(system_contents)
+
+        subprocess.run(f'rustup target add {target}')
+
+        # After saving everything successfully
+        QMessageBox.information(self, "Success", "System parameters saved successfully!")
+
+        # Open the project window
+        self.project_window = ProjectWindow()
+        self.project_window.show()
+
+        # Close the current setup window
+        self.close()
 
 
 
