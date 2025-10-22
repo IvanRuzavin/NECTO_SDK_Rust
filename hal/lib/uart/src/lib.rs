@@ -208,9 +208,6 @@ pub fn hal_uart_open(handle: &mut hal_uart_t, hal_obj_open_state: bool) -> Resul
             },
             Err(e) => {
                 hal_obj.handle = hal_uart_t::default().handle;
-                if e == HAL_UART_ERROR::UART_NOT_CURRENTLY_SUPPORTED {
-                    return Err(e);
-                }
                 return Err(HAL_UART_ERROR::ACQUIRE_FAIL) 
             },
         }

@@ -148,18 +148,14 @@ const HAL_LL_UART_AF_CONFIG : u32 = GPIO_CFG_MODE_ALT_FUNCTION | GPIO_CFG_SPEED_
 
 pub type hal_ll_uart_isr_t = fn(handle : &mut hal_ll_uart_handle_register_t, event : hal_ll_uart_irq_t );
 
-
-// TODO : remove the UART_NOT_CURRENTLY_SUPPORTED error
 #[derive(Debug, PartialEq)]
 pub enum HAL_LL_UART_ERROR {
     UART_WRONG_PINS,
     MODULE_ERROR,
     ACQUIRE_FAIL,
     UART_ERROR,
-    UART_NOT_CURRENTLY_SUPPORTED,
 }
 
-// TODO : remove the UART_NOT_CURRENTLY_SUPPORTED message
 impl fmt::Display for HAL_LL_UART_ERROR {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
@@ -167,7 +163,6 @@ impl fmt::Display for HAL_LL_UART_ERROR {
             Self::MODULE_ERROR => write!(f, "MODULE_ERROR occurred"),
             Self::ACQUIRE_FAIL => write!(f, "ACQUIRE_FAIL occurred"),
             Self::UART_ERROR => write!(f, "UART_ERROR occurred"),
-            Self::UART_NOT_CURRENTLY_SUPPORTED => write!(f, "UART is a work in progress and is currently not supported for this family"),
         }
     }
 }
@@ -309,11 +304,7 @@ static mut hal_ll_uart_hw_specifics_map:[hal_ll_uart_hw_specifics_map_t; (UART_M
 static mut irq_handler : hal_ll_uart_isr_t = empty_handler;
 
 ///////// public functions
-//TODO : check if change required most likely nothing to be change
-//TODO : remove the early error return
-pub fn hal_ll_uart_register_handle(tx_pin: hal_ll_pin_name_t, rx_pin: hal_ll_pin_name_t, hal_module_id: &mut u8) -> Result<hal_ll_uart_handle_register_t> {
-    return Err(HAL_LL_UART_ERROR::UART_NOT_CURRENTLY_SUPPORTED);
-    
+pub fn hal_ll_uart_register_handle(tx_pin: hal_ll_pin_name_t, rx_pin: hal_ll_pin_name_t, hal_module_id: &mut u8) -> Result<hal_ll_uart_handle_register_t> {    
     let pin_check_result: u8;
     let mut index_list: hal_ll_uart_pin_id = 
         hal_ll_uart_pin_id {
