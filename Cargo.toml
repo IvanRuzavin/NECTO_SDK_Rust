@@ -2,17 +2,20 @@
 name = "mikrosdk"
 version = "0.1.1"
 edition = "2024"
-author =  ["Leon Besnie leon.besnie@reseau.eseo.fr"]
+author =  [
+    "Leon Besnie leon.besnie@reseau.eseo.fr",
+    "Ivan Ruzavin ivan.ruzavin98@gmail.com"
+    ]
 
 
 [profile.release]
-opt-level = 'z' 
+opt-level = 'z'
 lto = true
 panic = "abort"
 
 
 [profile.dev]
-opt-level = 0 
+opt-level = 0
 lto = false
 panic = "abort"
 
@@ -37,7 +40,7 @@ system = {path = "core/system"}
 #ring = {path = "platform/ring"}
 
 
-#hal_one_wire = {path = "hal/lib/one_wire"} 
+#hal_one_wire = {path = "hal/lib/one_wire"}
 #hal_ll_one_wire = {path = "hal_ll/one_wire/hal_ll_one_wire"}
 
 [features]
