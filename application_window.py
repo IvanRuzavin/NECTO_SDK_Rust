@@ -2,7 +2,6 @@ import sys
 import os
 import subprocess
 import urllib.request
-import shutil
 from PyQt6.QtWidgets import (
     QApplication, QWidget, QPushButton, QVBoxLayout, QLabel, QHBoxLayout, QMessageBox, QMainWindow, QScrollArea
 )
