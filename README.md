@@ -1,6 +1,6 @@
 # Mikro SDK in Rust
 
-**Supported MCU:** 
+**Supported MCU:**
 - STM32F207ZG
 - STM32F217ZG
 - STM32F405xx, STM32F407xx, STM32F415xx and STM32F417xx tested with STM32F405ZG
@@ -9,14 +9,14 @@
 - STM32F479II
 - STM32L152RE
 
-**Partially Supported MCU: (missing UART)** 
+**Partially Supported MCU: (missing UART)**
 - STM32F723IE and STM32F723ZE tested with STM32F723ZE
 - STM32F756NG and STM32F756ZG tested with STM32F756ZG
 - STM32F777NI
 
-## Overview  
-This version implements every module required by Mikrobuses.  
-The folder `test` provides a set of `main.rs` files demonstrating the capabilities of the SDK using function from the libraries below:  
+## Overview
+This version implements every module required by Mikrobuses.
+The folder `test` provides a set of `main.rs` files demonstrating the capabilities of the SDK using function from the libraries below:
 
 - `drv_digital_in`
 - `drv_digital_out`
@@ -31,18 +31,18 @@ The folder `test` provides a set of `main.rs` files demonstrating the capabiliti
 For some functions, it is recommended to use a debugger to check their contents.
 The setting of pins and port should be adapted to the MCU being used.
 
-## Compiling and Flashing the Project  
+## Compiling and Flashing the Project
 
-### Prerequisites  
-Ensure you have the following tools installed:  
+### Prerequisites
+Ensure you have the following tools installed:
 
 - **Rustup and python 3**
-  - Installer for Windows, and installation procedure for other platform can be found here: 
+  - Installer for Windows, and installation procedure for other platform can be found here:
     - [Rust Installation Guide](https://www.rust-lang.org/tools/install)
     - [Python](https://www.python.org/downloads/)
 
-- **probe-rs**  
-  - Windows PowerShell command:  
+- **probe-rs**
+  - Windows PowerShell command:
     ```powershell
     powershell -ExecutionPolicy Bypass -c "irm https://github.com/probe-rs/probe-rs/releases/download/v0.27.0/probe-rs-tools-installer.ps1 | iex"
     ```
@@ -58,9 +58,9 @@ It will open a window in which you will have the possibility to search for your 
 
 You can now develope your project !
 
-### Compiling and Flashing  
+### Compiling and Flashing
 
-Run the following command to build and flash your MCU:  
+Run the following command to build and flash your MCU:
 
 ```sh
 cargo-flash --chip STM32F429ZI --connect-under-reset
@@ -79,10 +79,10 @@ After executing this command, you may be prompted to select a detected programme
 - **arm-none-eabi**
   - [arm-none-eabi download](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)
 
-### Setting Up  
+### Setting Up
 
-In the `xpack-openocd-X.XX.X-X\bin` folder, create a new configuration file (`.cfg`).  
-This file must contain the following:  
+In the `xpack-openocd-X.XX.X-X\bin` folder, create a new configuration file (`.cfg`).
+This file must contain the following:
 
 ```cfg
 source [find interface/stlink.cfg]
@@ -96,20 +96,20 @@ The target should be adapted again to the family of the MCU in use for your proj
   - stm32f7x.cfg
 
 
-### Debugging  
+### Debugging
 
-1. Start OpenOCD:  
+1. Start OpenOCD:
    ```sh
    <Your path to>\xpack-openocd-X.XX.X-X\bin\openocd.exe -f <Your path to>\xpack-openocd-X.XX.X-X\bin\<Your config name>.cfg
    ```
-   
-2. Launch GDB:  
+
+2. Launch GDB:
    ```sh
    <Your path to>\arm-gnu-toolchain-XX.X.rel1-mingw-w64-x86_64-arm-none-eabi\bin\arm-none-eabi-gdb.exe <Your path to>\<project root folder>\target\<target of the chosen  MCU>\debug\mikrosdk
    ```
    If you do not know the name of the target for your specific MCU, you can find it in the file `.cargo/config.toml`. It is automatically set at project setup by the python application.
    <br>
-   
+
 3. In GDB:
     ```sh
     target extended-remote localhost:3333
@@ -118,3 +118,17 @@ The target should be adapted again to the family of the MCU in use for your proj
     ```sh
     tar ext :3333
     ```
+
+
+```
+target extended-remote localhost:3333   # Connect to OpenOCD
+monitor reset halt                      # Reset and halt MCU
+load                                    # Flash your ELF file into MCU
+break main                              # Set breakpoint at main
+continue                                # Start running until main
+
+next       # step over
+step       # step into
+finish     # run until current function returns
+continue   # run until next breakpoint
+```

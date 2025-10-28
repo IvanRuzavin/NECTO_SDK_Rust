@@ -1,5 +1,5 @@
 import os, subprocess
-import time
+import time, signal
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QLabel, QComboBox, QPushButton, QTextEdit
 )
@@ -7,34 +7,6 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtGui import QTextCursor
 
 from PyQt6.QtCore import Qt, QThread, pyqtSignal, QTimer
-
-class Debugger(QThread):
-    output = pyqtSignal(str)
-
-    def __init__(self, command):
-        super().__init__()
-        self.command = command
-        self.process = None
-        self.running = True
-
-    def run(self):
-        self.process = subprocess.Popen(
-                    f"runner\\xpack-arm-none-eabi-gcc-14.2.1-1.1\\bin\\arm-none-eabi-gdb.exe ./target/{arm_target}/debug/mikrosdk",
-                    stdin=subprocess.PIPE,
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.STDOUT,
-                    shell=True,
-                    text=True
-                )
-        for line in self.process.stdout:
-            if not self.running:
-                break
-            self.output.emit(line.strip())
-
-    def stop(self):
-        self.running = False
-        if self.process:
-            self.process.terminate()
 
 class CommandRunner(QThread):
     output = pyqtSignal(str)
@@ -105,7 +77,10 @@ class DebugWorker(QThread):
 
             # Connect and break main
             self.send_gdb_command("target extended-remote localhost:3333")
+            self.send_gdb_command("monitor reset halt")
+            self.send_gdb_command("load")
             self.send_gdb_command("break main")
+            self.send_gdb_command("continue")
 
             # Continuously read GDB output
             for line in self.gdb.stdout:
@@ -121,14 +96,28 @@ class DebugWorker(QThread):
         if not self.gdb:
             return
         try:
-            self.gdb.stdin.write(cmd + "\n")
-            self.gdb.stdin.flush()
-            self.output_signal.emit(f"(send) {cmd}\n")
+            if cmd != signal.SIGINT:
+                self.gdb.stdin.write(cmd + "\n")
+                self.gdb.stdin.flush()
+                self.output_signal.emit(f"(send) {cmd}\n")
+            else:
+                self.gdb.stdin.write
+                self.gdb.stdin.flush()
+                self.output_signal.emit(f"(send) PAUSE DEBUG\n")
         except Exception as e:
             self.output_signal.emit(f"[ERROR] Failed to send: {e}\n")
 
     def step(self):
-        self.send_gdb_command("s")
+        self.send_gdb_command("next")
+
+    def step_into(self):
+        self.send_gdb_command("step")
+
+    def step_out(self):
+        self.send_gdb_command("finish")
+
+    def restart(self):
+        self.send_gdb_command("run")
 
     def run_program(self):
         self.send_gdb_command("continue")
@@ -170,6 +159,9 @@ class ProjectWindow(QWidget):
         build_button = QPushButton("Build Project")
         debug_button = QPushButton("Debug MCU")
         step_button = QPushButton("Step")
+        step_into_button = QPushButton("Step Into")
+        step_out_button = QPushButton("Step Out")
+        restart_button = QPushButton("Restart")
         run_button = QPushButton("Run")
         stop_debug_button = QPushButton("Stop Debugging")
         flash_button = QPushButton("Flash MCU")
@@ -180,6 +172,9 @@ class ProjectWindow(QWidget):
         build_button.clicked.connect(self.build_project)
         debug_button.clicked.connect(lambda: self.debug_project(cfg_target, arm_target))
         step_button.clicked.connect(self.step_debug)
+        step_into_button.clicked.connect(self.step_into_debug)
+        step_out_button.clicked.connect(self.step_out_debug)
+        restart_button.clicked.connect(self.restart_debug)
         run_button.clicked.connect(self.run_debug)
         stop_debug_button.clicked.connect(self.stop_debugging)
         flash_button.clicked.connect(lambda: self.flash_project(mcu_name))
@@ -203,6 +198,9 @@ class ProjectWindow(QWidget):
         layout.addWidget(build_button)
         layout.addWidget(debug_button)
         layout.addWidget(step_button)
+        layout.addWidget(step_into_button)
+        layout.addWidget(step_out_button)
+        layout.addWidget(restart_button)
         layout.addWidget(run_button)
         layout.addWidget(stop_debug_button)
         layout.addWidget(flash_button)
@@ -230,6 +228,18 @@ class ProjectWindow(QWidget):
     def step_debug(self):
         if self.debug_worker:
             self.debug_worker.step()
+
+    def step_into_debug(self):
+        if self.debug_worker:
+            self.debug_worker.step_into()
+
+    def step_out_debug(self):
+        if self.debug_worker:
+            self.debug_worker.step_out()
+
+    def restart_debug(self):
+        if self.debug_worker:
+            self.debug_worker.restart()
 
     def run_debug(self):
         if self.debug_worker:
@@ -268,80 +278,11 @@ class ProjectWindow(QWidget):
 
     def build_project(self):
         self.run_command("cargo build")
-        
-    # def send_gdb_command(self, gdb, cmd: str):
-    #     """Send a command to GDB and read a few lines of response."""
-    #     print(f"(send) {cmd}")
-    #     gdb.stdin.write(cmd + "\n")
-    #     gdb.stdin.flush()
-    #     time.sleep(0.2)
-    #     while True:
-    #         line = gdb.stdout.readline()
-    #         if not line:
-    #             break
-    #         print(line.strip())
-    #         if "(gdb)" in line:
-    #             break
 
-    # def debug_project(self, cfg_target, arm_target):
-    #     openocd_path = "runner/xpack-openocd-0.12.0-7/bin/openocd.exe"
-    #     cfg_target = f"runner/xpack-openocd-0.12.0-7/bin/{cfg_target}"
-    #     # Launch OpenOCD
-    #     openocd = subprocess.Popen(
-    #         [openocd_path, '-f', cfg_target],
-    #         stdout=subprocess.PIPE,
-    #         stderr=subprocess.STDOUT,
-    #         text=True,
-    #     )
-        
-    #     print("OpenOCD started...")
-    #     time.sleep(2)  # Give OpenOCD time to start up
-        
-    #     # Check output
-    #     for i in range(5):
-    #         line = openocd.stdout.readline()
-    #         if not line:
-    #             break
-    #         print(line.strip())
-        
-    #     gdb = subprocess.Popen(
-    #         [
-    #             "runner/xpack-arm-none-eabi-gcc-14.2.1-1.1/bin/arm-none-eabi-gdb.exe",
-    #             f"./target/{arm_target}/debug/mikrosdk"
-    #         ],
-    #         stdin=subprocess.PIPE,
-    #         stdout=subprocess.PIPE,
-    #         stderr=subprocess.STDOUT,
-    #         text=True
-    #     )
-        
-    #     # Sequence of commands
-    #     try:
-    #         self.send_gdb_command(gdb, "target extended-remote localhost:3333")
-    #         self.send_gdb_command(gdb, "break main")
-    #         self.send_gdb_command(gdb, "s")
-
-    #     except Exception as e:
-    #         print("Error:", e)
-
-    #     finally:
-    #         print("Closing GDB and OpenOCD...")
-    #         gdb.stdin.write("quit\n")
-    #         gdb.stdin.flush()
-    #         gdb.terminate()
-    #         openocd.terminate()
-            
     def append_output(self, text):
         self.output_box.moveCursor(QTextCursor.MoveOperation.End)
         self.output_box.insertPlainText(text)
         self.output_box.ensureCursorVisible()
-
-    # def stop_debugging(self, gdb, openocd):
-    #         print("Closing GDB and OpenOCD...")
-    #         gdb.stdin.write("quit\n")
-    #         gdb.stdin.flush()
-    #         gdb.terminate()
-    #         openocd.terminate()
 
     def flash_project(self, mcu_name):
         self.run_command(f"cargo flash --chip {mcu_name} --connect-under-reset")
