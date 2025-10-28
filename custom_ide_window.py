@@ -1,12 +1,11 @@
 import os, subprocess
 import time, signal
 from PyQt6.QtWidgets import (
-    QWidget, QVBoxLayout, QLabel, QComboBox, QPushButton, QTextEdit
+    QWidget, QVBoxLayout, QLabel, QComboBox, QPushButton, QTextEdit, QHBoxLayout, QSplitter
 )
 
-from PyQt6.QtGui import QTextCursor
-
-from PyQt6.QtCore import Qt, QThread, pyqtSignal, QTimer
+from PyQt6.QtGui import QTextCursor, QFont
+from PyQt6.QtCore import Qt, QThread, pyqtSignal
 
 class CommandRunner(QThread):
     output = pyqtSignal(str)
@@ -144,8 +143,11 @@ class ProjectWindow(QWidget):
     def __init__(self, mcu_name, cfg_target, arm_target):
         super().__init__()
         self.setWindowTitle("Rust Project Builder")
-        self.setMinimumSize(700, 500)
+        self.setMinimumSize(900, 700)
 
+        # -----------------------------
+        # Layout and basic UI controls
+        # -----------------------------
         layout = QVBoxLayout()
         label = QLabel("System setup saved successfully!\nNow you can build or flash the project.")
         label.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -155,6 +157,7 @@ class ProjectWindow(QWidget):
         self.project_combo = QComboBox()
         self.project_combo.setEditable(False)
         self.project_combo.addItems(project_list)
+
         choose_project_button = QPushButton("Choose Project")
         build_button = QPushButton("Build Project")
         debug_button = QPushButton("Debug MCU")
@@ -168,6 +171,41 @@ class ProjectWindow(QWidget):
         erase_button = QPushButton("Erase MCU")
         close_button = QPushButton("Close")
 
+        # -----------------------------
+        # Code Editor for main.rs
+        # -----------------------------
+        self.editor = QTextEdit()
+        self.editor.setFont(QFont("Consolas", 11))
+        self.editor.setStyleSheet("""
+            background-color: #1e1e1e;
+            color: #dcdcdc;
+            border: 1px solid #444;
+        """)
+
+        self.file_path = os.path.join(os.getcwd(), 'src', 'main.rs')
+
+        # Load main.rs on startup
+        self.load_file(self.file_path)
+
+        # Save button
+        save_button = QPushButton("Save File")
+        save_button.clicked.connect(self.save_file)
+
+        # -----------------------------
+        # Output terminal
+        # -----------------------------
+        self.output_box = QTextEdit()
+        self.output_box.setReadOnly(True)
+        self.output_box.setStyleSheet("""
+            background-color: #111;
+            color: #0f0;
+            font-family: Consolas, monospace;
+            font-size: 12px;
+        """)
+
+        # -----------------------------
+        # Button connections
+        # -----------------------------
         choose_project_button.clicked.connect(self.configure_main_project)
         build_button.clicked.connect(self.build_project)
         debug_button.clicked.connect(lambda: self.debug_project(cfg_target, arm_target))
@@ -181,37 +219,86 @@ class ProjectWindow(QWidget):
         erase_button.clicked.connect(lambda: self.erase_mcu(mcu_name))
         close_button.clicked.connect(self.close)
 
-        # Terminal-like output area
-        self.output_box = QTextEdit()
-        self.output_box.setReadOnly(True)
-        self.output_box.setStyleSheet("""
-            background-color: #111;
-            color: #0f0;
-            font-family: Consolas, monospace;
-            font-size: 12px;
-        """)
+        # -----------------------------
+        # Layout composition
+        # -----------------------------
+        main_layout = QHBoxLayout()  # Horizontal split: buttons (left) + content (right)
 
-        layout.addWidget(label)
-        layout.addWidget(project_label)
-        layout.addWidget(self.project_combo)
-        layout.addWidget(choose_project_button)
-        layout.addWidget(build_button)
-        layout.addWidget(debug_button)
-        layout.addWidget(step_button)
-        layout.addWidget(step_into_button)
-        layout.addWidget(step_out_button)
-        layout.addWidget(restart_button)
-        layout.addWidget(run_button)
-        layout.addWidget(stop_debug_button)
-        layout.addWidget(flash_button)
-        layout.addWidget(erase_button)
-        layout.addWidget(close_button)
-        layout.addWidget(QLabel("Output:"))
-        layout.addWidget(self.output_box)
+        # ---- Left side: vertical buttons ----
+        button_layout = QVBoxLayout()
+        for b in [
+            choose_project_button, build_button, debug_button, step_button,
+            step_into_button, step_out_button, restart_button, run_button,
+            stop_debug_button, flash_button, erase_button, close_button
+        ]:
+            button_layout.addWidget(b)
+        button_layout.addStretch()  # push buttons to top
 
-        self.setLayout(layout)
-        self.debug_worker = None  # QThread for debugger
-        self.command_worker = None  # QThread for commander
+        # ---- Right side: main content ----
+        right_layout = QVBoxLayout()
+        # ---- Create splitter for vertical resizing ----
+        splitter = QSplitter(Qt.Orientation.Vertical)
+
+        # Optional labels at top and bottom
+        editor_container = QWidget()
+        editor_layout = QVBoxLayout()
+        editor_layout.setContentsMargins(0, 0, 0, 0)
+        editor_layout.addWidget(QLabel("main.rs Editor:"))
+        editor_layout.addWidget(self.editor)
+        editor_layout.addWidget(save_button)
+        editor_container.setLayout(editor_layout)
+
+        console_container = QWidget()
+        console_layout = QVBoxLayout()
+        console_layout.setContentsMargins(0, 0, 0, 0)
+        console_layout.addWidget(QLabel("Output:"))
+        console_layout.addWidget(self.output_box)
+        console_container.setLayout(console_layout)
+
+        splitter.addWidget(editor_container)
+        splitter.addWidget(console_container)
+
+        # Optional: set initial proportions (editor bigger)
+        splitter.setStretchFactor(0, 3)
+        splitter.setStretchFactor(1, 1)
+
+        right_layout.addWidget(label)
+        right_layout.addWidget(project_label)
+        right_layout.addWidget(self.project_combo)
+        right_layout.addWidget(splitter)
+
+        # ---- Combine both ----
+        main_layout.addLayout(button_layout, 1)  # left panel
+        main_layout.addLayout(right_layout, 4)   # right panel (wider)
+
+        self.setLayout(main_layout)
+
+        # Threads
+        self.debug_worker = None
+        self.command_worker = None
+
+    # -----------------------------
+    # File operations
+    # -----------------------------
+    def load_file(self, path):
+        """Load main.rs content into the editor."""
+        try:
+            with open(path, 'r', encoding='utf-8') as f:
+                content = f.read()
+            self.editor.setPlainText(content)
+        except FileNotFoundError:
+            self.editor.setPlainText("// main.rs not found.\n")
+        except Exception as e:
+            self.output_box.append(f"[ERROR] Failed to open file: {e}\n")
+
+    def save_file(self):
+        """Save editor content back to main.rs."""
+        try:
+            with open(self.file_path, 'w', encoding='utf-8') as f:
+                f.write(self.editor.toPlainText())
+            self.output_box.append("[INFO] main.rs saved successfully.\n")
+        except Exception as e:
+            self.output_box.append(f"[ERROR] Failed to save file: {e}\n")
 
     # -------------------
     # Debug control logic
